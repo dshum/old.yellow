@@ -2,35 +2,56 @@
 
 class WelcomeController extends Controller {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Welcome Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders the "marketing page" for the application and
-	| is configured to only allow guests. Like most of the other sample
-	| controllers, you are free to modify or remove it as you desire.
-	|
-	*/
-
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
 	public function __construct()
 	{
 		$this->middleware('guest');
 	}
 
-	/**
-	 * Show the application welcome screen to the user.
-	 *
-	 * @return Response
-	 */
+	public function special()
+	{
+		$scope = array();
+
+		view()->share('currentElement', null);
+
+		$scope = CommonFilter::apply($scope);
+
+		$goodList =
+			Good::where('special', true)->
+			orderBy('name')->
+			get();
+
+		$scope['goodList'] = $goodList;
+
+		return view('catalogue.special', $scope);
+	}
+
+	public function novelty()
+	{
+		$scope = array();
+
+		view()->share('currentElement', null);
+
+		$scope = CommonFilter::apply($scope);
+
+		$goodList =
+			Good::where('novelty', true)->
+			orderBy('name')->
+			get();
+
+		$scope['goodList'] = $goodList;
+
+		return view('catalogue.novelty', $scope);
+	}
+
 	public function index()
 	{
-		return view('welcome');
+		$scope = array();
+
+		view()->share('currentElement', null);
+
+		$scope = CommonFilter::apply($scope);
+
+		return view('welcome', $scope);
 	}
 
 }

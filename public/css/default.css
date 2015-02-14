@@ -1,0 +1,144 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background-color: #FFF;
+	color: #000;
+	font: 120% arial;
+	padding: 20px;
+	height: auto;
+}
+
+h1 a, h1 span {
+	background-color: #789;
+	color: #FFF;
+	padding: 5px 20px 5px 20px;
+}
+
+h2 a, h2 span {
+	background-color: #9AB;
+	color: #FFF;
+	padding: 3px 15px 3px 15px;
+}
+
+h3 a, h3 span {
+	background-color: #ABC;
+	color: #FFF;
+	padding: 3px 15px 3px 15px;
+}
+
+table {
+	font-size: 100%;
+	border-collapse: collapse;
+}
+
+p {
+	margin: 0.5em 0;
+}
+
+img {
+	border: none;
+}
+
+a {
+	color: #005aa8;
+	text-decoration: underline;
+}
+
+input[type="text"], input[type="password"] {
+	width: 300px;
+	font-size: 120%;
+}
+
+input[type="submit"] {
+	padding: 5px 20px;
+	font-size: 120%;
+}
+
+textarea {
+	width: 400px;
+}
+
+.grey {
+	color: #CCC;
+}
+
+.red {
+	color: #D70;
+}
+
+p.error span {
+	padding: 5px 10px;
+	background: #E70;
+	color: #FFF;
+	font-weight: bold;
+}
+
+div.left {
+	width: 20%;
+	float: left;
+	margin: 0;
+	padding: 10px 20px;
+}
+
+div.center {
+	width: 70%;
+	float: left;
+	margin: 0;
+	padding: 10px 20px;
+}
+
+div.category {
+	width: 30%;
+	float: left;
+	margin: 5px 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+div.category img {
+	border: 1px solid #999;
+	border-radius: 10px;
+}
+
+div.good {
+	float: left;
+	margin: 5px 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+img {
+	border-radius: 10px;
+}
+
+div.good div.title {
+	text-align: left;
+}
+
+span.btn {
+	padding: 4px 7px 5px 7px;
+	font-size: 80%;
+	background: #690;
+	color: #FFF;
+	border-radius: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+div.good small {
+	font-size: 80%;
+	color: #999;
+}
+
+div.footer {
+	width: 50%;
+	border-top: 2px solid #CCC;
+	padding: 10px;
+}
+
+div.footer {
+	font-size: 80%;
+}
