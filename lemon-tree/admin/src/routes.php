@@ -19,7 +19,6 @@ Route::filter('admin.auth', function() {
 				foreach ($_SERVER as $key => $val) {
 					if (preg_match($rx_http, $key)) {
 						$arh_key = preg_replace($rx_http, '', $key);
-						$rx_matches = array();
 						$rx_matches = explode('_', $arh_key);
 						if (sizeof($rx_matches) > 0 and strlen($arh_key) > 2) {
 							foreach ($rx_matches as $ak_key => $ak_val) {

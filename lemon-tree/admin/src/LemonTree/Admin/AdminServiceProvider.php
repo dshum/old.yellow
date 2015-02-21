@@ -18,6 +18,8 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		\DB::enableQueryLog();
+		
 		$site = \App::make('site');
 
 		$site->initMicroTime();
