@@ -1,0 +1,42 @@
+<div ng-controller="ElementPermissionsController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active" ng-show="group">{{group.name}}</li>
+	</ul>
+	<div ng-show="group">
+		<h2 class="page-header">Доступ к элементам группы <b>{{group.name}}</b></h2>
+		<form role="form" submit-on="CtrlS" ng-submit="submit()">
+			<div class="form-group" ng-repeat="item in itemList">
+				<h2>{{item.title}}</h2>
+				<div class="table-responsive">
+					<table class="element-list table-striped table-hover">
+						<col width="40%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
+						<thead>
+							<th>Название</th>
+							<th class="text-center">Доступ закрыт</th>
+							<th class="text-center">Просмотр</th>
+							<th class="text-center">Изменение</th>
+							<th class="text-center">Удаление</th>
+						</thead>
+						<tbody>
+						<tr ng-repeat="element in itemElementList[item.name]">
+							<td>{{element.name}}<span name="{{element.classId}}" label="{{element.name}}" class="error"></span></td>
+							<td class="text-center" ng-click="permission[element.classId] = 'deny'" ng-class="permission[element.classId] === 'deny' ? 'light' : ''"><input ng-model="permission[element.classId]" type="radio" value="deny"></td>
+							<td class="text-center" ng-click="permission[element.classId] = 'view'" ng-class="permission[element.classId] === 'view' ? 'light' : ''"><input ng-model="permission[element.classId]" type="radio" value="view"></td>
+							<td class="text-center" ng-click="permission[element.classId] = 'update'" ng-class="permission[element.classId] === 'update' ? 'light' : ''"><input ng-model="permission[element.classId]" type="radio" value="update"></td>
+							<td class="text-center" ng-click="permission[element.classId] = 'delete'"ng-class="permission[element.classId] === 'delete' ? 'light' : ''"><input ng-model="permission[element.classId]" type="radio" value="delete"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+			</div>
+		</form>
+	</div>
+</div>

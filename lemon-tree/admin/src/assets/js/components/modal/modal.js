@@ -1,0 +1,1 @@
+var modal = angular.module('ModalCtrl', []);

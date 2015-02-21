@@ -1,0 +1,33 @@
+<div ng-controller="EditController">
+	<ul ng-if=" ! trashed" class="breadcrumb">
+		<li><a ui-sref="base.browse">Корень сайта</a></li>
+		<li ng-repeat="parent in parentList"><a ui-sref="base.browseElement({classId: parent.classId})">{{parent.mainProperty}}</a></li>
+		<li class="active"><a ui-sref="base.browseElement({classId: currentElement.classId})">{{currentElement.mainProperty}}</a></li>
+	</ul>
+	<ul ng-if="trashed" class="breadcrumb">
+		<li><a ui-sref="base.trash">Корзина</a></li>
+		<li class="active">{{currentElement.mainProperty}}</li>
+	</ul>
+	<p class="controls">
+		<button ng-click="up()" type="button" class="btn btn-default"><span class="halflings halflings-triangle-top"></span> Наверх</button>
+		<button type="button" class="btn btn-default disabled"><span class="halflings halflings-pencil"></span> Редактировать</button>
+		<button type="button" class="btn btn-default" ng-click="submit()"><span class="halflings halflings-floppy-disk"></span> Сохранить</button>
+		<button type="button" class="btn btn-default"><span class="halflings halflings-duplicate"></span> Копировать</button>
+		<button type="button" class="btn btn-default"><span class="halflings halflings-arrow-right"></span> Переместить</button>
+		<button type="button" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
+	</p>
+	<h1>
+		<favorite ng-if=" ! trashed" class-id="currentElement.classId"></favorite>
+		Редактирование элемента типа <b>{{currentItem.title}}</b>
+	</h1>
+	<div class="well" ng-show="currentElement">
+		<form role="form" ng-model="currentElement" submit-on="CtrlS" ng-submit="submit()" ng-show="currentElement">
+			<div class="form-group{{property.isMainProperty ? ' main-property' : ''}}" ng-repeat="property in propertyList">
+				<property type="property.class" mode="edit" view="property.editView"></property>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+			</div>
+		</form>
+	</div>
+</div>

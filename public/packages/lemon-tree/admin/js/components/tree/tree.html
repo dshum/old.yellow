@@ -1,0 +1,12 @@
+<div ng-repeat="item in itemList">
+	<div class="item">{{item.title}}</div>
+	<div class="margin" ng-repeat="element in itemElementList[item.name]">
+		<div>
+			<div ng-click="hide(element.classId)" ng-show="subTree[element.classId] && isTreeView(element.classId)" node="{{element.classId}}" opened="true" class="minus"><span class="halflings halflings-menu-down"></span></div>
+			<div ng-click="open(element.classId)" ng-show="subTree[element.classId] && ! isTreeView(element.classId)" node="{{element.classId}}" opened="open" class="plus"><span class="halflings halflings-menu-right"></span></div>
+			<div ng-hide="subTree[element.classId]" class="empty"></div>
+			<a ui-sref="base.browseElement({classId: element.classId})" class-id="{{element.classId}}" context-menu="menuOptions">{{element.mainProperty}}</a>
+		</div>
+		<subtree ng-if="subTree[element.classId]" tree="subTree[element.classId]" show="isTreeView(element.classId)" node="element.classId"></subtree>
+	</div>
+</div>

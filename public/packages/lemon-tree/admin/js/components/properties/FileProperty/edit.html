@@ -1,0 +1,11 @@
+<label for="{{view.name}}">{{view.title}}:</label>
+<div ng-if="view.exists">
+	<span class="grey">Загружен файл: <a href="{{view.path}}" target="_blank">{{view.filename}}</a>, {{view.filesize}} Кб<br /></span>
+</div>
+<div ng-if=" ! view.readonly">
+	<input type="file" id="{{view.name}}" class="form-control file" data-toggle="popover">
+	<div class="small red">Максимальный размер файла {{view.maxFilesize}} Кб</div>
+	<div ng-if="view.exists">
+		<label><input type="checkbox" name="{{view.name}}_drop" value="1"> Удалить</label>
+	</div>
+</div>

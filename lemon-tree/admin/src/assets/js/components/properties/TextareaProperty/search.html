@@ -1,0 +1,6 @@
+<div class="search-textarea">
+	<span class="glyphicons glyphicons-comments"></span> <span ng-click="toggle(view.name)" class="dashed hand">{{view.title}}</span>:
+	<div name="{{view.name}}" style="display: {{view.open ? 'block' : 'none'}}">
+		<input ng-model="view.value" type="text" class="form-control">
+	</div>
+</div>

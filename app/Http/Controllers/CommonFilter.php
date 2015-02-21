@@ -6,8 +6,6 @@ class CommonFilter {
 
 	public static function apply($scope = array()) {
 
-		\DB::enableQueryLog();
-
 		view()->share('currentElement', null);
 		view()->share('currentRouteName', \Route::getCurrentRoute()->getActionName());
 		view()->share('loggedUser', null);

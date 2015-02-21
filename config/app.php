@@ -78,7 +78,7 @@ return [
 	|
 	*/
 
-	'key' => env('APP_KEY', 'SomeRandomString'),
+	'key' => env('APP_KEY', 'JeremyFisher'),
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -136,6 +136,9 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		'LemonTree\Admin\AdminServiceProvider',
+
 		/*
 		 * Application Service Providers...
 		 */
@@ -192,6 +195,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+		'LemonTree' => 'LemonTree\Admin',
 
 	],
 

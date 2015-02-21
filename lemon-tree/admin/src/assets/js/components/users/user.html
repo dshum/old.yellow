@@ -1,0 +1,54 @@
+<div ng-controller="UserController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active" ng-show="id && user">{{user.login}}</li>
+		<li class="active" ng-hide="id">Новый пользователь</li>
+	</ul>
+	<div>
+		<div class="well">
+			<form role="form" ng-model="user" submit-on="CtrlS" ng-submit="submit()">
+				<div class="form-group">
+					<label for="login">Логин</label><span name="login" label="Логин" class="error"></span>
+					<input ng-model="user.login" type="text" id="login" class="form-control" placeholder="Введите логин">
+				</div>
+				<div class="form-group">
+					<label for="password">Пароль</label><span name="password" label="Пароль" class="error"></span>
+					<input ng-model="user.password" type="password" id="password" class="form-control" placeholder="Введите новый пароль">
+				</div>
+				<div class="form-group">
+					<label for="email">E-mail</label><span name="email" label="E-mail" class="error"></span>
+					<input ng-model="user.email" type="email" id="email" class="form-control" placeholder="Введите адрес электронной почты">
+				</div>
+				<div class="form-group">
+					<label for="first_name">Имя</label><span name="first_name" label="Имя" class="error"></span>
+					<input ng-model="user.first_name" type="text" id="first_name" class="form-control" placeholder="Введите имя">
+				</div>
+				<div class="form-group">
+					<label for="last_name">Фамилия</label><span name="last_name" label="Фамилия" class="error"></span>
+					<input ng-model="user.last_name" type="text" id="last_name" class="form-control" placeholder="Введите фамилию">
+				</div>
+				<div class="form-group" ng-show="groupList.length">
+					<label>Состоит в группах:</label>
+					<div class="checkbox" ng-repeat="group in groupList">
+						<label>
+							<input ng-model="user.groups[group.id]" type="checkbox"> {{group.name}}
+							<span name="group_{{group.id}}" label="{{group.name}}" class="error"></span>
+						</label>
+					</div>
+				</div>
+				<div class="form-group" ng-show="id">
+					<label>Дата регистрации:</label> {{user.created_at}}
+				</div>
+				<div class="form-group" ng-show="id">
+					<label>Последнее изменение:</label> {{user.updated_at}}
+				</div>
+				<div class="form-group" ng-show="id">
+					<label>Дата последнего входа:</label> {{user.last_login || 'Не определено'}}
+				</div>
+				<div class="form-group">
+					<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

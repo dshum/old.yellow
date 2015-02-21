@@ -1,0 +1,27 @@
+{
+    "name": "lemon-tree/admin",
+    "description": "Laravel 5 + Angular JS + Lemon Tree",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denis Shumeev",
+            "email": "denis-shumeev@yandex.ru"
+        }
+    ],
+	"require": {
+		"php": ">=5.4.0",
+		"illuminate/support": "4.2.*",
+		"firebase/php-jwt": "dev-master"
+	},
+	"autoload": {
+		"classmap": [
+			"src/lib",
+			"src/lib/properties",
+			"src/controllers",
+			"src/migrations",
+			"src/seeds",
+			"src/views"
+		]
+	},
+    "minimum-stability": "dev"
+}

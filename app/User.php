@@ -5,10 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use LemonTree\ElementInterface;
+use LemonTree\ElementTrait;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ElementInterface {
 
 	use Authenticatable, CanResetPassword;
+	use ElementTrait;
 
 	/**
 	 * The database table used by the model.

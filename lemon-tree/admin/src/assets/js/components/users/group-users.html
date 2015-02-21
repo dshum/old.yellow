@@ -1,0 +1,40 @@
+<div ng-controller="GroupUsersController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active" ng-show="group">{{group.name}}</li>
+	</ul>
+	<div ng-show="userList.length">
+		<span class="h2">Пользователи группы <b>{{group.name}}</b></span>
+		<div class="table-responsive">
+			<table class="element-list table-striped table-hover">
+				<thead>
+					<th class="first"></th>
+					<th>Логин</th>
+					<th>E-mail</th>
+					<th>Имя</th>
+					<th>Фамилия</th>
+					<th>Группы</th>
+					<th>Создан</th>
+					<th>Последний вход</th>
+					<th class="last"><span class="halflings halflings-remove-circle"></span></th>
+				</thead>
+				<tbody>
+				<tr ng-repeat="user in userList">
+					<td class="first"><a ui-sref="base.log({id: user.id})"><span class="halflings halflings-menu-right"></span></a></td>
+					<td><a ui-sref="base.user({id: user.id})">{{user.login}}</a></td>
+					<td>{{user.email}}</td>
+					<td>{{user.first_name}}</td>
+					<td>{{user.last_name}}</td>
+					<td>
+						<div ng-repeat="group in user.groups"><a ui-sref="base.group({id: group.id})">{{group.name}}</a></div>
+						<div ng-show="user.isSuperUser"><strong>Суперпользователь</strong></div>
+					</td>
+					<td>{{Helper.toDate(user.created_at) | date: 'dd.MM.yyyy'}}<br /><small>{{Helper.toDate(user.created_at) | date: 'HH:mm:ss'}}</small></td>
+					<td><span ng-show="user.last_login">{{Helper.toDate(user.last_login) | date: 'dd.MM.yyyy'}}<br /><small>{{Helper.toDate(user.last_login) | date: 'HH:mm:ss'}}</small></span></td>
+					<td class="last"><span class="hand danger" ng-click="deleteUser(user)" title="Удалить"><span class="halflings halflings-remove-circle"></span></span></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

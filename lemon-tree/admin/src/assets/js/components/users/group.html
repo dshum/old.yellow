@@ -1,0 +1,55 @@
+<div ng-controller="GroupController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active" ng-show="id && group">{{group.name}}</li>
+		<li class="active" ng-hide="id">Новая группа</li>
+	</ul>
+	<div>
+		<div class="well">
+			<form role="form" ng-model="group" submit-on="CtrlS" ng-submit="submit()">
+				<div class="form-group">
+					<label for="name">Название:</label><span name="name" label="Название" class="error"></span>
+					<input ng-model="group.name" type="text" class="form-control" placeholder="Введите название группы">
+				</div>
+				<div class="form-group">
+					<label>
+						<input ng-model="group.admin" type="checkbox" value="1"> Управление пользователями
+					</label>
+					<span name="admin" label="Управление пользователями" class="error"></span>
+				</div>
+				<div class="form-group">
+					<label>Доступ к элементам по умолчанию:</label><span name="default_permission" label="Доступ к элементам по умолчанию" class="error"></span>
+					<div class="radio">
+						<label>
+							<input ng-model="group.default_permission" type="radio" value="deny"> Доступ закрыт
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input ng-model="group.default_permission" type="radio" value="view"> Просмотр
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input ng-model="group.default_permission" type="radio" value="update"> Изменение
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input ng-model="group.default_permission" type="radio" value="delete"> Удаление
+						</label>
+					</div>
+				</div>
+				<div class="form-group" ng-show="id">
+					<label>Дата создания:</label> {{group.created_at}}
+				</div>
+				<div class="form-group" ng-show="id">
+					<label>Последнее изменение:</label> {{group.updated_at}}
+				</div>
+				<div class="form-group">
+					<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,13 @@
+<div ng-if="view.readonly">
+	<label for="{{view.name}}">{{view.title}}:</label>
+	<span ng-if="view.value"><a ui-sref="base.editElement({classId: view.value.classId})">{{view.value[view.mainProperty]}}</a></span>
+	<span ng-if=" ! view.value">Не определено</span>
+</div>
+<div ng-if=" ! view.readonly">
+	<label for="{{view.name}}" data-toggle="popover">{{view.title}}:</label>
+	<span ng-if="view.value"><a ui-sref="base.editElement({classId: view.value.classId})">{{view.value[view.mainProperty]}}</a></span>
+	<span ng-if=" ! view.value">Не определено</span>
+	<input ng-model="view.value.id" type="hidden" name="{{view.name}}">
+	<input ng-model="view.value.id" type="text" class="form-control one" placeholder="Введите ID или название" ng-options="element.id as element.value for element in getList($viewValue)" data-animation="am-fade" data-min-length="0" data-limit="10" bs-typeahead>
+	<span ng-click="view.value.id = null" class="dashed hand">Очистить</span><br />
+</div>

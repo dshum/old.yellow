@@ -1,0 +1,1 @@
+var navbar = angular.module('NavbarCtrl', []);

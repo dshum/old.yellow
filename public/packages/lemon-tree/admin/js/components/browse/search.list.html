@@ -1,0 +1,38 @@
+<div ng-show="elementListView">
+	<p class="controls">
+		<button type="button" class="btn btn-default"><span class="halflings halflings-floppy-disk"></span> Сохранить</button>
+		<button type="button" class="btn btn-default"><span class="halflings halflings-duplicate"></span> Копировать</button>
+		<button type="button" class="btn btn-default"><span class="halflings halflings-arrow-right"></span> Переместить</button>
+		<button type="button" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
+	</p>
+	<table class="element-list-header">
+		<tbody>
+			<tr>
+				<td nowrap><span class="h2 hand dashed">{{elementListView.item.title}}</span></td>
+				<td nowrap>
+					<div class="order-link"><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</div>
+				</td>
+				<td width="90%"></td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="element-list table-striped table-hover table-responsive">
+		<thead>
+			<th class="first"><img src="/packages/lemon-tree/admin/img/default-sorting-inactive.gif" alt="" /></th>
+			<th ng-repeat="property in elementListView.itemPropertyList">{{property.title}}</th>
+			<th class="last"><input type="checkbox"></th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="element in elementListView.elementList">
+				<td class="first"><span class="halflings halflings-menu-right"></span></td>
+				<td ng-repeat="property in element.propertyList">
+					<property type="property.class" mode="list" view="property.listView"></property>
+				</td>
+				<td class="last"><input type="checkbox"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div ng-show="empty">
+	Элементов не найдено.
+</div>

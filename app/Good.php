@@ -1,10 +1,12 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use LemonTree\ElementInterface;
+use LemonTree\ElementTrait;
 
-class Good extends Model {
+class Good extends Model implements ElementInterface {
 
-//	use LemonTree\ElementTrait;
+	use ElementTrait;
 
 	public function getHref()
 	{

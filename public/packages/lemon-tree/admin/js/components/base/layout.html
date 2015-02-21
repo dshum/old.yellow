@@ -1,0 +1,70 @@
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="NavbarController">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ui-sref="base.browse" ng-click="collapse()"><span class="logo"><span class="glyphicons glyphicons-glass"></span></span></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="{{activeIcon === 'search' ? 'active' : ''}}"><a ui-sref="base.search"><span class="halflings halflings-search"></span> Поиск</a></li>
+				<li class="{{activeIcon === 'trash' ? 'active' : ''}}"><a ui-sref="base.trash"><span class="halflings halflings-trash"></span> Корзина</a></li>
+				<li class="{{activeIcon === 'users' ? 'active' : ''}}"><a ui-sref="base.users"><span class="halflings halflings-user"></span> Пользователи</a></li>
+				<li class="dropdown{{activeIcon === 'profile' ? ' active' : ''}}">
+					<a href class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						{{loggedUser.first_name}} {{loggedUser.last_name}}
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a ui-sref="base.profile">Профиль</a></li>
+						<li class="divider"></li>
+						<li><a ui-sref="simple.login" ng-click="logout()">Выход</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="tree">
+	<div ng-controller="FavoritesController">
+		<div class="animate-repeat favorites">
+			<div ng-repeat="favorite in favoriteList" class="animate-repeat margin">
+				<favorite class-id="favorite.classId"></favorite>
+				<a ui-sref="base.browseElement({classId: favorite.classId})" context-menu="menuOptions">{{favorite.name}}</a>
+			</div>
+		</div>
+	</div>
+	<tree></tree>
+</div>
+
+<div class="main">
+	<div class="ui-view-container">
+		<div ui-view class="page-animate"></div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="form.html">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+		<h3 class="modal-title">Ошибки заполнения формы</h3>
+	</div>
+	<div class="modal-body">
+		<div ng-repeat="error in data.errors">
+			<strong>{{error.label}}.</strong> {{error.message}}.
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="modal.html">
+	<div class="modal-body">
+		{{data.message}}
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-warning" ng-click="ok()">{{textOk || 'OK'}}</button>
+		<button class="btn btn-default" ng-click="cancel()">{{textCancel || 'Отмена'}}</button>
+	</div>
+</script>

@@ -1,0 +1,12 @@
+<div ng-if="view.isMainProperty" class="search-main">
+	<span>ID или {{view.title | lowercase}}</span>:
+	<div>
+		<input ng-model="view.value" type="text" class="form-control" placeholder="Введите ID или название" ng-options="element as element.value for element in getList($viewValue)" data-animation="am-fade" data-min-length="0" data-limit="10" bs-typeahead>
+	</div>
+</div>
+<div ng-if=" ! view.isMainProperty" class="search-textfield">
+	<span class="glyphicons glyphicons-pen"></span> <span ng-click="toggle(view.name)" class="dashed hand">{{view.title}}</span>:
+	<div name="{{view.name}}" style="display: {{view.open ? 'block' : 'none'}}">
+		<input ng-model="view.value" type="text" class="form-control">
+	</div>
+</div>

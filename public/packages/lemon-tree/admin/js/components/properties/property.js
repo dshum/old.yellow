@@ -1,0 +1,1 @@
+var property = angular.module('PropertyCtrl', []);

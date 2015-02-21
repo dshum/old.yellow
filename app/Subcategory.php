@@ -1,8 +1,12 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use LemonTree\ElementInterface;
+use LemonTree\ElementTrait;
 
-class Subcategory extends Model {
+class Subcategory extends Model implements ElementInterface {
+
+	use ElementTrait;
 
 	public function getHref()
 	{

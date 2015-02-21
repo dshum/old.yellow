@@ -1,0 +1,34 @@
+<div ng-controller="SearchItemController">
+	<div ng-show="propertyList.length" id="item-container" class="search-properties">
+		<form role="form" ng-submit="search()">
+			<div class="form-group">
+				<table class="element-list-header">
+					<tr>
+						<td>
+							<span class="h2">Свойства элемента</span>
+						</td>
+						<td>
+							<div class="order-link">
+								сортировать по
+								<span ng-click="sortProperties('rate')" ng-class="sortProperty === 'rate' ? 'active' : 'dashed hand'">частоте</span>,
+								<span ng-click="sortProperties('date')" ng-class="sortProperty === 'date' ? 'active' : 'dashed hand'">дате</span>,
+								<span ng-click="sortProperties('name')" ng-class="sortProperty === 'name' ? 'active' : 'dashed hand'">названию</span>,
+								<span ng-click="sortProperties('default')" ng-class="sortProperty === 'default' ? 'active' : 'dashed hand'">по умолчанию</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div class="clearfix">
+					<div id="properties-container">
+						<div ng-repeat="property in propertyList" class="prop-search">
+							<property type="property.class" mode="search" view="property.searchView"></property>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Найти</button>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,60 @@
+<div ng-controller="LogController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active">Журнал действий <span ng-hide="activeUser">пользователей</span><span ng-show="activeUser">пользователя <b>{{activeUser.login}}</b></span></li>
+	</ul>
+	<div class="well">
+		<form role="form" ng-submit="submit()">
+			<div class="row">
+				<div class="form-group col-md-10">
+					<label>Пользователь:</label>
+					<select ng-model="activeUser" ng-options="user as user.login for user in userList track by user.id" class="form-control" data-toggle="popover">
+						<option value="">- Любой -</option>
+					</select>
+				</div>
+				<div class="form-group col-md-10">
+					<label>Тип операции:</label>
+					<select ng-model="filter.actionType" ng-options="actionType.name as actionType.title for actionType in actionTypeList" class="form-control" data-toggle="popover">
+						<option value="">- Любой -</option>
+					</select>
+				</div>
+				<div class="form-group col-md-10">
+					<label>Комментарий содержит:</label>
+					<input ng-model="filter.comments" type="text" class="form-control" placeholder="Введите часть слова" data-toggle="popover">
+				</div>
+				<div class="form-group col-md-20">
+					<label>Дата операции:</label>
+					<div>
+						от <input ng-model="filter.dateFrom" type="text" class="form-control date" date-format="dd.MM.yyyy" model-date-format="yyyy-MM-dd" date-type="date" autoclose="1" start-week="1" placement="bottom-left" bs-datepicker>
+						&nbsp; до <input ng-model="filter.dateTo" type="text" class="form-control date" date-format="dd.MM.yyyy" model-date-format="yyyy-MM-dd" date-type="date" autoclose="1" start-week="1" placement="bottom-right" bs-datepicker>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Найти</button>
+			</div>
+		</form>
+	</div>
+	<div ng-show="userActionList.length">
+		<table class="element-list table-striped table-hover">
+			<thead>
+				<th>Пользователь</th>
+				<th>Тип действия</th>
+				<th>Комментарий</th>
+				<th>Дата</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="userAction in userActionList">
+					<td>{{userAction.user.login}}<br /><small class="grey">{{userAction.user.first_name}} {{userAction.user.last_name}}</small></td>
+					<td><a href="{{userAction.url}}">{{userAction.action_type_name}}</a></td>
+					<td>{{userAction.comments}}</td>
+					<td>{{Helper.toDate(userAction.created_at) | date: 'dd.MM.yyyy'}}<br /><small>{{Helper.toDate(userAction.created_at) | date: 'HH:mm:ss'}}</small></td>
+				</tr>
+			</tbody>
+		</table>
+		<pagination ng-show="numPages > 1" total-items="count" ng-model="currentPage" items-per-page="perPage" max-size="maxSize" direction-links="false" num-pages="numPages" class="pagination-sm" ng-change="pageChanged()"></pagination>
+	</div>
+	<div ng-show="empty">
+		<alert type="default">Пользователь не совершал действий.</alert>
+	</div>
+</div>

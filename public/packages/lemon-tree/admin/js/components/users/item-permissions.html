@@ -1,0 +1,41 @@
+<div ng-controller="ItemPermissionsController">
+	<ul class="breadcrumb">
+		<li><a ui-sref="base.users">Управление пользователями</a></li>
+		<li class="active" ng-show="group">{{group.name}}</li>
+	</ul>
+	<div ng-show="group">
+		<h2 class="page-header">Доступ к элементам по умолчанию группы <b>{{group.name}}</b></h2>
+		<form role="form" submit-on="CtrlS" ng-submit="submit()">
+			<div class="form-group">
+				<div class="table-responsive">
+					<table class="element-list table-striped table-hover">
+						<col width="40%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
+						<thead>
+							<th>Тип элемента</th>
+							<th class="text-center">Доступ закрыт</th>
+							<th class="text-center">Просмотр</th>
+							<th class="text-center">Изменение</th>
+							<th class="text-center">Удаление</th>
+						</thead>
+						<tbody>
+						<tr ng-repeat="item in itemList">
+							<td>{{item.title}}<span name="{{item.name}}" label="{{item.title}}" class="error"></span></td>
+							<td class="text-center" ng-click="permission[item.name] = 'deny'" ng-class="permission[item.name] === 'deny' ? 'light' : ''"><input ng-model="permission[item.name]" type="radio" value="deny"></td>
+							<td class="text-center" ng-click="permission[item.name] = 'view'" ng-class="permission[item.name] === 'view' ? 'light' : ''"><input ng-model="permission[item.name]" type="radio" value="view"></td>
+							<td class="text-center" ng-click="permission[item.name] = 'update'" ng-class="permission[item.name] === 'update' ? 'light' : ''"><input ng-model="permission[item.name]" type="radio" value="update"></td>
+							<td class="text-center" ng-click="permission[item.name] = 'delete'"ng-class="permission[item.name] === 'delete' ? 'light' : ''"><input ng-model="permission[item.name]" type="radio" value="delete"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+			</div>
+		</form>
+	</div>
+</div>

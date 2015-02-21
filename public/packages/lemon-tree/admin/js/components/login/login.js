@@ -1,0 +1,1 @@
+var login = angular.module('LoginCtrl', []);

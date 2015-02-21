@@ -1,0 +1,8 @@
+<div class="search-checkbox">
+	<span class="glyphicons glyphicons-ok-2"></span> <span ng-click="toggle(view.name)" class="dashed hand">{{view.title}}</span>:
+	<div name="{{view.name}}" style="display: {{view.open ? 'block' : 'none'}}">
+		<label><input ng-model="view.value" type="radio" value="true"> Да</label>
+		<label><input ng-model="view.value" type="radio" value="false"> Нет</label>
+		<label><input ng-model="view.value" type="radio" value=""> Не важно</label>
+	</div>
+</div>

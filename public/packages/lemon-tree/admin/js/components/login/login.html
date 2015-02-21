@@ -1,0 +1,29 @@
+<div class="login">
+	<div class="container">
+		<div class="row vertical-offset-100">
+			<div class="col-sm-30 col-sm-offset-15 col-md-20 col-md-offset-20">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row-fluid user-row">
+							<h1 class="text-center">Добро пожаловать!</h1>
+						</div>
+					</div>
+					<div class="panel-body" ng-controller="LoginController">
+						<div ng-show="message" class="alert alert-danger">{{message}}</div>
+						<form role="form" class="form-signin" ng-model="loginData" ng-submit="submit()">
+							<div class="form-group">
+								<input ng-model="loginData.login" type="text" id="login" class="form-control" placeholder="Логин" required autofocus>
+							</div>
+							<div class="form-group">
+								<input ng-model="loginData.password" type="password" id="password" class="form-control" placeholder="Пароль" required>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

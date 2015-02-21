@@ -1,0 +1,7 @@
+<div class="search-date">
+	<span class="glyphicons glyphicons-time"></span> <span ng-click="toggle(view.name)" class="dashed hand">{{view.title}}</span>:
+	<div name="{{view.name}}" style="display: {{view.value ? 'block' : 'none'}}">
+		от <input ng-model="view.from" type="text" class="form-control" size="8" autoclose="1" time-format="HH:mm:ss" model-time-format="HH:mm:ss" time-type="string" length="1" minute-step="1" arrow-behavior="picker" placement="top-left" bs-timepicker>
+		до <input ng-model="view.to" type="text" class="form-control" size="8" autoclose="1" time-format="HH:mm:ss" model-time-format="HH:mm:ss" time-type="string" length="1" minute-step="1" arrow-behavior="picker" placement="top-right" bs-timepicker>
+	</div>
+</div>

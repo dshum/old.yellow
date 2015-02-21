@@ -1,0 +1,21 @@
+<label for="{{view.name}}">{{view.title}}:</label>
+<div ng-if="view.exists">
+	<span class="grey">Загружено изображение: <a ng-if="view.src" href="{{view.src}}" target="_blank">{{view.filename}}</a>, <span title="Размер изображения">{{view.width}}&#215;{{view.height}}</span> пикселов, {{view.filesize}} Кб<br /></span>
+	<img ng-src="{{view.src}}" width="{{view.width}}" height="{{view.height}}" class="img-thumbnail" alt="{{view.filename}}" />
+</div>
+<div ng-repeat="resize in view.resizes">
+	<div ng-if="resize.exists">
+		<span class="grey">Загружено изображение: <a ng-if="resize.src" href="{{resize.src}}" target="_blank">{{resize.filename}}</a>, <span title="Размер изображения">{{resize.width}}&#215;{{resize.height}}</span> пикселов, {{resize.filesize}} Кб<br /></span>
+		<img ng-src="{{resize.src}}" width="{{resize.width}}" height="{{resize.height}}" class="img-thumbnail" alt="{{resize.filename}}" />
+	</div>
+</div>
+<div ng-if=" ! view.readonly">
+	<input type="file" id="{{view.name}}" class="form-control file" data-toggle="popover">
+	<div class="small red">Максимальный размер файла {{view.maxFilesize}} Кб</div>
+	<div ng-if="view.maxWidth > 0 && view.maxHeight > 0" class="small red">Максимальный размер изображения {{view.maxWidth}}&#215;{{view.maxHeight}} пикселов</div>
+	<div ng-if="view.maxWidth > 0 && ! view.maxHeight" class="small red">Максимальная ширина изображения {{view.maxWidth}} пикселов</div>
+	<div ng-if=" ! view.maxWidth && view.maxHeight > 0" class="small red">Максимальная высота изображения {{view.maxHeight}} пикселов</div>
+	<div ng-if="view.exists">
+		<label><input type="checkbox" name="{{view.name}}_drop" value="1"> Удалить</label>
+	</div>
+</div>

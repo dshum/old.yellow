@@ -1,0 +1,28 @@
+<div ng-controller="ProfileController">
+	<ul class="breadcrumb">
+		<li class="active" ng-show="loggedUser">Профиль пользователя <b>{{loggedUser.login}}</b></li>
+	</ul>
+	<div class="well" ng-show="loggedUser">
+		<form role="form" ng-model="profile" submit-on="CtrlS" ng-submit="submit()" ng-show="profile">
+			<div class="form-group">
+				<label for="password">Пароль</label><span name="password" label="Пароль" class="error"></span>
+				<input ng-model="profile.password" type="password" id="password" class="form-control" placeholder="Введите новый пароль">
+			</div>
+			<div class="form-group">
+				<label for="email">E-mail</label><span name="email" label="E-mail" class="error"></span>
+				<input ng-model="profile.email" type="email" id="email" class="form-control" placeholder="Введите адрес электронной почты">
+			</div>
+			<div class="form-group">
+				<label for="first_name">Имя</label><span name="first_name" label="Имя" class="error"></span>
+				<input ng-model="profile.first_name" type="text" id="first_name" class="form-control" placeholder="Введите имя">
+			</div>
+			<div class="form-group">
+				<label for="last_name">Фамилия</label><span name="last_name" label="Фамилия" class="error"></span>
+				<input ng-model="profile.last_name" type="text" id="last_name" class="form-control" placeholder="Введите фамилию">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+			</div>
+		</form>
+	</div>
+</div>

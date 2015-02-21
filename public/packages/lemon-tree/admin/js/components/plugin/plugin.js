@@ -1,0 +1,1 @@
+var plugin = angular.module('PluginCtrl', []);
