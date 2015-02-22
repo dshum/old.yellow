@@ -1,7 +1,8 @@
 <html>
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Ошибка 404</title>
 		<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-
 		<style>
 			body {
 				margin: 0;
@@ -34,7 +35,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Be right back.</div>
+				<div class="title">Страница не найдена.</div>
 			</div>
 		</div>
 	</body>

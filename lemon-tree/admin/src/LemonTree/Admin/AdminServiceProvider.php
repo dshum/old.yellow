@@ -18,8 +18,6 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		\DB::enableQueryLog();
-		
 		$site = \App::make('site');
 
 		$site->initMicroTime();
@@ -44,22 +42,6 @@ class AdminServiceProvider extends ServiceProvider {
 		]);
 
 		/*
-		\App::error(function(\Exception $exception, $code) {
-			\Log::error($exception);
-			\LemonTree\ErrorMessageUtils::sendMessage($exception);
-			if (\Config::get('app.debug') !== true) {
-				return \Response::view('error500', array(), 500);
-			}
-		});
-		 */
-
-		/*
-		\App::missing(function($exception) {
-			return \Response::view('error404', array(), 404);
-		});
-		 */
-
-		/*
 		\Cache::extend('file', function($app) {
 			return new \Illuminate\Cache\Repository(
 				new \LemonTree\CustomFileStore($app['files'], $app['config']['cache.path'])
@@ -67,33 +49,11 @@ class AdminServiceProvider extends ServiceProvider {
 		});
 		 */
 
+		\DB::enableQueryLog();
+
 		\Blade::extend(function($value) {
 			return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
 		});
-
-		\Config::set(
-			'cartalyst/sentry::groups.model',
-			'LemonTree\Models\Group');
-
-		\Config::set(
-			'cartalyst/sentry::users.model',
-			'LemonTree\Models\User');
-
-		\Config::set(
-			'cartalyst/sentry::users.login_attribute',
-			'login');
-
-		\Config::set(
-			'cartalyst/sentry::user_groups_pivot_table',
-			'cytrus_users_groups');
-
-		\Config::set(
-			'cartalyst/sentry::throttling.model',
-			'LemonTree\Models\Throttle');
-
-		\Config::set(
-			'cartalyst/sentry::hasher',
-			'sha256');
 
 		include __DIR__.'/../../routes.php';
 	}

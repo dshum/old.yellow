@@ -136,6 +136,7 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 
+		'Bugsnag\BugsnagLaravel\BugsnagLaravelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 		'LemonTree\Admin\AdminServiceProvider',
 
@@ -196,6 +197,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
+		'Bugsnag' => 'Bugsnag\BugsnagLaravel\BugsnagFacade',
 		'LemonTree' => 'LemonTree\Admin',
 
 	],

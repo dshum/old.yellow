@@ -1,7 +1,8 @@
 <?php namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+//use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Bugsnag\BugsnagLaravel\BugsnagExceptionHandler as ExceptionHandler;
 
 class Handler extends ExceptionHandler {
 
@@ -36,6 +37,10 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+		if (env('APP_DEBUG') !== true) {
+			return response()->view('errors.500');
+		}
+
 		return parent::render($request, $e);
 	}
 
