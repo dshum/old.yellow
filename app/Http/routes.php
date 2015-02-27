@@ -4,8 +4,13 @@ use App\Category;
 use App\Subcategory;
 use App\Good;
 use App\Section;
-
 use App\Http\Controllers\CommonFilter;
+
+Route::get('plugins/moneyStat', 'MoneyStatController@getIndex');
+
+Route::group(['before' => 'admin.auth'], function() {
+	Route::get('plugins/moneyStat/list', 'MoneyStatController@getList');
+});
 
 Route::group(array('before' => 'guest'), function() {
 	Route::get('/register', array('as' => 'register', 'uses' => 'RegisterController@getIndex'));

@@ -381,7 +381,7 @@ $site->
 	bindTree('App.ServiceSection.6', 'App\ServiceSection')->
 	bindTree('App.ServiceSection.7', 'App\ServiceSection')->
 
-	bindBrowsePlugin('App\ServiceSection.8', 'moneyStat')->
+	bindBrowsePlugin('App.ServiceSection.8', 'moneyStat')->
 	bindSearchPlugin('App\Good', 'goodSearch')->
 	bindEditPlugin('App\ServiceSection', 'moneyStat2')->
 	bindBrowseFilter('App\Good', 'goodFilter')->
