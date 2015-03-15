@@ -5,19 +5,20 @@ use LemonTree\Models\Favorite;
 
 class FavoritesController extends Controller {
 
-	public function postToggle($classId)
+	public function toggle($classId)
 	{
 		$scope = array();
 
 		$loggedUser = LoggedUser::getUser();
 
-		$favorite = Favorite::where(
+		$favorite =
+			Favorite::where(
 				function($query) use ($loggedUser, $classId) {
 					$query->where('user_id', $loggedUser->id);
 					$query->where('class_id', $classId);
 				}
 			)->
-			orderBy('created_at')->first();
+			first();
 
 		if ($favorite) {
 			$favorite->delete();
@@ -45,14 +46,20 @@ class FavoritesController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getList()
+	public function favorites()
 	{
 		$scope = array();
 
 		$loggedUser = LoggedUser::getUser();
 
-		$favoriteList = Favorite::where('user_id', $loggedUser->id)->
-			orderBy('created_at')->get();
+		$favoriteList = \Cache::tags('Favorite')->rememberForever(
+			"getFavoriteListByUser({$loggedUser->id}).orderBy(created_at.asc)",
+			function () use ($loggedUser) {
+				return
+					Favorite::where('user_id', $loggedUser->id)->
+					orderBy('created_at')->get();
+			}
+		);
 
 		$favorites = [];
 

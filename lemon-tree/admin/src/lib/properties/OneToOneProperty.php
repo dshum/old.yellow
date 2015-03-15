@@ -5,12 +5,7 @@ use LemonTree\ElementInterface;
 
 class OneToOneProperty extends BaseProperty {
 
-	const RESTRICT = 1;
-	const CASCADE = 2;
-	const SETNULL = 3;
-
 	protected $relatedClass = null;
-	protected $deleting = self::RESTRICT;
 	protected $parent = false;
 	protected $binds = array();
 
@@ -45,24 +40,6 @@ class OneToOneProperty extends BaseProperty {
 	public function getRelatedClass()
 	{
 		return $this->relatedClass;
-	}
-
-	public function setDeleting($deleting)
-	{
-		if (in_array($deleting, array(
-			self::RESTRICT,
-			self::CASCADE,
-			self::SETNULL,
-		))) {
-			$this->deleting = $deleting;
-		}
-
-		return $this;
-	}
-
-	public function getDeleting()
-	{
-		return $this->deleting;
 	}
 
 	public function setParent($parent)
@@ -111,10 +88,14 @@ class OneToOneProperty extends BaseProperty {
 		$mainProperty = $relatedItem->getMainProperty();
 		$id = $this->element->{$this->getName()};
 
-		try {
-			$this->value = $relatedClass && $id
-				? $relatedClass::find($id) : null;
-		} catch (\Exception $e) {}
+		if ($relatedClass && $id) {
+			$this->value = \Cache::rememberForever(
+				"$relatedClass.getById($id)",
+				function() use ($relatedClass, $id) {
+					return $relatedClass::find($id);
+				}
+			);
+		}
 
 		if ($this->value) {
 			$this->value->classId = $this->value->getClassId();
@@ -166,7 +147,7 @@ class OneToOneProperty extends BaseProperty {
 		return $scope;
 	}
 
-	public function getElementMoveView()
+	public function getMoveView()
 	{
 		$site = \App::make('site');
 
@@ -177,24 +158,12 @@ class OneToOneProperty extends BaseProperty {
 			'name' => $this->getName(),
 			'title' => $this->getTitle(),
 			'value' => $this->getValue(),
-			'element' => $this->getElement(),
 			'readonly' => $this->getReadonly(),
 			'required' => $this->getRequired(),
 			'relatedClass' => $relatedItem->getNameId(),
-			'mainProperty' => $relatedItem->getMainProperty(),
 		);
 
-		if ($this->getBinds()) {
-			$treeView = \App::make('LemonTree\TreeController')->show1($this);
-			$scope['treeView'] = $treeView ? $treeView : '';
-		}
-
-		try {
-			$view = $this->getClassName().'.elementMove';
-			return \View::make('admin::properties.'.$view, $scope);
-		} catch (\Exception $e) {}
-
-		return null;
+		return $scope;
 	}
 
 	public function getSearchView()

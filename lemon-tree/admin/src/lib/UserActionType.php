@@ -13,6 +13,7 @@ class UserActionType {
 	const ACTION_TYPE_DROP_ELEMENT_LIST_ID = 'delete.element.list';
 	const ACTION_TYPE_RESTORE_ELEMENT_ID = 'restore.element';
 	const ACTION_TYPE_RESTORE_ELEMENT_LIST_ID = 'restore.element.list';
+	const ACTION_TYPE_MOVE_ELEMENT_ID = 'move.element';
 	const ACTION_TYPE_MOVE_ELEMENT_LIST_ID = 'move.element.list';
 	const ACTION_TYPE_ORDER_ELEMENT_LIST_ID = 'order.element.list';
 	const ACTION_TYPE_PLUGIN_ID = 'plugin';
@@ -41,6 +42,7 @@ class UserActionType {
 		self::ACTION_TYPE_DROP_ELEMENT_LIST_ID => 'Удаление списка элементов',
 		self::ACTION_TYPE_RESTORE_ELEMENT_ID => 'Восстановление элемента из корзины',
 		self::ACTION_TYPE_RESTORE_ELEMENT_LIST_ID => 'Восстановление списка элементов из корзины',
+		self::ACTION_TYPE_MOVE_ELEMENT_ID => 'Перемещение элемента',
 		self::ACTION_TYPE_MOVE_ELEMENT_LIST_ID => 'Перемещение списка элементов',
 		self::ACTION_TYPE_ORDER_ELEMENT_LIST_ID => 'Сортировка списка элементов',
 		self::ACTION_TYPE_PLUGIN_ID => 'Плагин',

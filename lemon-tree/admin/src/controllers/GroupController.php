@@ -9,36 +9,6 @@ use LemonTree\Models\GroupElementPermission;
 
 class GroupController extends Controller {
 
-	public function getGroup($id)
-	{
-		$scope = array();
-
-		$group = Group::find($id);
-
-		if ( ! $group) {
-			$scope['state'] = 'error_group_not_found';
-			return \Response::json($scope);
-		}
-
-		$loggedUser = LoggedUser::getUser();
-
-		if ( ! $loggedUser->hasAccess('admin')) {
-			$scope['state'] = 'error_admin_access_denied';
-			return \Response::json($scope);
-		}
-
-		if ($loggedUser->inGroup($group)) {
-			$scope['state'] = 'error_group_access_denied';
-			return \Response::json($scope);
-		}
-
-		$group->admin = $group->hasAccess('admin');
-
-		$scope['group'] = $group;
-
-		return \Response::json($scope);
-	}
-
 	public function delete($id)
 	{
 		$scope = array();
@@ -50,7 +20,12 @@ class GroupController extends Controller {
 			return \Response::json($scope);
 		}
 
-		$group = Group::find($id);
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
 
 		if ( ! $group) {
 			$scope['state'] = 'error_group_not_found';
@@ -74,7 +49,7 @@ class GroupController extends Controller {
 			'ID '.$group->id.' ('.$group->name.')'
 		);
 
-		$scope['status'] = 'ok';
+		$scope['state'] = 'ok';
 
 		return \Response::json($scope);
 	}
@@ -93,7 +68,12 @@ class GroupController extends Controller {
 		$group = null;
 
 		if ($id) {
-			$group = Group::find($id);
+			$group = \Cache::rememberForever(
+				"getGroupById($id)",
+				function() use ($id) {
+					return Group::find($id);
+				}
+			);
 
 			if ( ! $group) {
 				$scope['state'] = 'error_group_not_found';
@@ -162,119 +142,21 @@ class GroupController extends Controller {
 		$group->admin = $group->hasAccess('admin');
 
 		$scope['group'] = $group;
-		$scope['status'] = 'ok';
+		$scope['state'] = 'ok';
 
 		return \Response::json($scope);
 	}
 
-	public function postSaveItemPermissions($id)
+	public function saveElementPermissions($id)
 	{
 		$scope = array();
 
-		$group = Group::find($id);
-
-		if ( ! $group) {
-			$scope['state'] = 'error_group_not_found';
-			return \Response::json($scope);
-		}
-
-		$loggedUser = LoggedUser::getUser();
-
-		if ( ! $loggedUser->hasAccess('admin')) {
-			$scope['state'] = 'error_admin_access_denied';
-			return \Response::json($scope);
-		}
-
-		if ($loggedUser->inGroup($group)) {
-			$scope['state'] = 'error_group_access_denied';
-			return \Response::json($scope);
-		}
-
-		$input = \Input::all();
-
-		$site = \App::make('site');
-
-		$itemList = $site->getItemList();
-
-		foreach ($itemList as $item) {
-			$rules[$item->getName()] = 'required|in:deny,view,update,delete';
-			$messages[$item->getName().'.required'] = 'Поле обязательно к заполнению';
-			$messages[$item->getName().'.in'] = 'Некорректное право доступа';
-		}
-
-		$validator = \Validator::make($input, $rules, $messages);
-
-		if ($validator->fails()) {
-			$messages = $validator->messages()->getMessages();
-			$errors = array();
-			foreach ($messages as $field => $messageList) {
-				foreach ($messageList as $message) {
-					$errors[$field][] = $message;
-				}
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
 			}
-			$scope['error'] = $errors;
-			return \Response::json($scope);
-		}
-
-		$defaultPermission = $group->default_permission
-			? $group->default_permission
-			: 'deny';
-
-		$itemPermissions = $group->itemPermissions;
-
-		$permissionList = array();
-
-		foreach ($itemPermissions as $itemPermission) {
-			$class = $itemPermission->class;
-			$permissionList[$class] = $itemPermission;
-		}
-
-		foreach ($itemList as $item) {
-
-			$class = $item->getName();
-
-			if (isset($permissionList[$class])) {
-
-				$itemPermission = $permissionList[$class];
-
-				$permission = $itemPermission->permission;
-
-				if ($defaultPermission == $input[$class]) {
-					$itemPermission->delete();
-				} elseif ($permission != $input[$class]) {
-					$itemPermission->permission = $input[$class];
-					$itemPermission->save();
-				}
-
-			} elseif ($defaultPermission != $input[$class]) {
-
-				$itemPermission = new GroupItemPermission;
-
-				$itemPermission->group_id = $group->id;
-				$itemPermission->class = $class;
-				$itemPermission->permission = $input[$class];
-
-				$itemPermission->save();
-
-			}
-
-		}
-
-		UserAction::log(
-			UserActionType::ACTION_TYPE_SAVE_ITEM_PERMISSIONS_ID,
-			'ID '.$group->id.' ('.$group->name.')'
 		);
-
-		$scope['status'] = 'ok';
-
-		return json_encode($scope);
-	}
-
-	public function postSaveElementPermissions($id)
-	{
-		$scope = array();
-
-		$group = Group::find($id);
 
 		if ( ! $group) {
 			$scope['state'] = 'error_group_not_found';
@@ -418,16 +300,129 @@ class GroupController extends Controller {
 			'ID '.$group->id.' ('.$group->name.')'
 		);
 
-		$scope['status'] = 'ok';
+		$scope['state'] = 'ok';
 
 		return json_encode($scope);
 	}
 
-	public function getElementPermissions($id)
+	public function saveItemPermissions($id)
 	{
 		$scope = array();
 
-		$group = Group::find($id);
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
+
+		if ( ! $group) {
+			$scope['state'] = 'error_group_not_found';
+			return \Response::json($scope);
+		}
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ( ! $loggedUser->hasAccess('admin')) {
+			$scope['state'] = 'error_admin_access_denied';
+			return \Response::json($scope);
+		}
+
+		if ($loggedUser->inGroup($group)) {
+			$scope['state'] = 'error_group_access_denied';
+			return \Response::json($scope);
+		}
+
+		$input = \Input::all();
+
+		$site = \App::make('site');
+
+		$itemList = $site->getItemList();
+
+		foreach ($itemList as $item) {
+			$rules[$item->getName()] = 'required|in:deny,view,update,delete';
+			$messages[$item->getName().'.required'] = 'Поле обязательно к заполнению';
+			$messages[$item->getName().'.in'] = 'Некорректное право доступа';
+		}
+
+		$validator = \Validator::make($input, $rules, $messages);
+
+		if ($validator->fails()) {
+			$messages = $validator->messages()->getMessages();
+			$errors = array();
+			foreach ($messages as $field => $messageList) {
+				foreach ($messageList as $message) {
+					$errors[$field][] = $message;
+				}
+			}
+			$scope['error'] = $errors;
+			return \Response::json($scope);
+		}
+
+		$defaultPermission = $group->default_permission
+			? $group->default_permission
+			: 'deny';
+
+		$itemPermissions = $group->itemPermissions;
+
+		$permissionList = array();
+
+		foreach ($itemPermissions as $itemPermission) {
+			$class = $itemPermission->class;
+			$permissionList[$class] = $itemPermission;
+		}
+
+		foreach ($itemList as $item) {
+
+			$class = $item->getName();
+
+			if (isset($permissionList[$class])) {
+
+				$itemPermission = $permissionList[$class];
+
+				$permission = $itemPermission->permission;
+
+				if ($defaultPermission == $input[$class]) {
+					$itemPermission->delete();
+				} elseif ($permission != $input[$class]) {
+					$itemPermission->permission = $input[$class];
+					$itemPermission->save();
+				}
+
+			} elseif ($defaultPermission != $input[$class]) {
+
+				$itemPermission = new GroupItemPermission;
+
+				$itemPermission->group_id = $group->id;
+				$itemPermission->class = $class;
+				$itemPermission->permission = $input[$class];
+
+				$itemPermission->save();
+
+			}
+
+		}
+
+		UserAction::log(
+			UserActionType::ACTION_TYPE_SAVE_ITEM_PERMISSIONS_ID,
+			'ID '.$group->id.' ('.$group->name.')'
+		);
+
+		$scope['state'] = 'ok';
+
+		return json_encode($scope);
+	}
+
+	public function elementPermissions($id)
+	{
+		$scope = array();
+
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
 
 		if ( ! $group) {
 			$scope['state'] = 'error_group_not_found';
@@ -513,11 +508,16 @@ class GroupController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getItemPermissions($id)
+	public function itemPermissions($id)
 	{
 		$scope = array();
 
-		$group = Group::find($id);
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
 
 		if ( ! $group) {
 			$scope['state'] = 'error_group_not_found';
@@ -571,7 +571,42 @@ class GroupController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getList()
+	public function group($id)
+	{
+		$scope = array();
+
+		$group = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
+
+		if ( ! $group) {
+			$scope['state'] = 'error_group_not_found';
+			return \Response::json($scope);
+		}
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ( ! $loggedUser->hasAccess('admin')) {
+			$scope['state'] = 'error_admin_access_denied';
+			return \Response::json($scope);
+		}
+
+		if ($loggedUser->inGroup($group)) {
+			$scope['state'] = 'error_group_access_denied';
+			return \Response::json($scope);
+		}
+
+		$group->admin = $group->hasAccess('admin');
+
+		$scope['group'] = $group;
+
+		return \Response::json($scope);
+	}
+
+	public function groups()
 	{
 		$scope = array();
 
@@ -582,7 +617,12 @@ class GroupController extends Controller {
 			return \Response::json($scope);
 		}
 
-		$groupList = Group::orderBy('name', 'asc')->get();
+		$groupList = \Cache::tags('Group')->rememberForever(
+			"getGroupList.orderBy(name.asc)",
+			function() {
+				return Group::orderBy('name', 'asc')->get();
+			}
+		);
 
 		foreach ($groupList as $group) {
 			$group->admin = $group->hasAccess('admin');

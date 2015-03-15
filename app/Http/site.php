@@ -106,7 +106,6 @@ $site->
 			OneToOneProperty::create('category_id')->
 			setTitle('Категория товаров')->
 			setRelatedClass('App\Category')->
-			setDeleting(OneToOneProperty::RESTRICT)->
 			setParent(true)->
 			setRequired(true)->
 			bind('Category')
@@ -137,13 +136,6 @@ $site->
 			addRule('regex:/^[a-z0-9\-]+$/i', 'Допускаются латинские буквы, цифры и дефис')
 		)->
 		addProperty(
-			TextfieldProperty::create('code')->
-			setTitle('Артикул')->
-			setRequired(true)->
-			setShow(true)->
-			setEditable(true)
-		)->
-		addProperty(
 			ImageProperty::create('image')->
 			setTitle('Изображение')->
 			setResize(300, 350, 80)->
@@ -165,12 +157,8 @@ $site->
 			setEditable(true)
 		)->
 		addProperty(
-			FloatProperty::create('price2')->
-			setTitle('Цена 2')
-		)->
-		addProperty(
-			FloatProperty::create('price3')->
-			setTitle('Цена 3')
+			FloatProperty::create('old_price')->
+			setTitle('Старая цена')
 		)->
 		addProperty(
 			TextfieldProperty::create('title')->
@@ -216,7 +204,6 @@ $site->
 			OneToOneProperty::create('category_id')->
 			setTitle('Категория товара')->
 			setRelatedClass('App\Category')->
-			setDeleting(OneToOneProperty::RESTRICT)->
 			setRequired(true)->
 			setParent(true)->
 			bind('Category')
@@ -225,7 +212,6 @@ $site->
 			OneToOneProperty::create('subcategory_id')->
 			setTitle('Подкатегория товара')->
 			setRelatedClass('App\Subcategory')->
-			setDeleting(OneToOneProperty::RESTRICT)->
 			bind('Category')->
 			bind('Category', 'Subcategory')
 		)->
@@ -283,7 +269,6 @@ $site->
 			OneToOneProperty::create('section_id')->
 			setTitle('Раздел сайта')->
 			setRelatedClass('App\Section')->
-			setDeleting(OneToOneProperty::RESTRICT)->
 			setParent(true)->
 			bind(Site::ROOT, 'Section')->
 			bind('Section', 'Section')
@@ -313,7 +298,6 @@ $site->
 			OneToOneProperty::create('service_section_id')->
 			setTitle('Служебный раздел')->
 			setRelatedClass('App\ServiceSection')->
-			setDeleting(OneToOneProperty::RESTRICT)->
 			setParent(true)->
 			bind(Site::ROOT, 'App\ServiceSection')->
 			bind('App\ServiceSection', 'App\ServiceSection')

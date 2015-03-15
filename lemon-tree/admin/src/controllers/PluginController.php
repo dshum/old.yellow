@@ -2,7 +2,7 @@
 
 class PluginController extends Controller {
 
-	public function getBrowsePlugin($classId)
+	public function browsePlugin($classId)
 	{
 		$scope = array();
 

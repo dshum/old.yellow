@@ -12,7 +12,7 @@ users.controller('ProfileController', function(
 			method: 'POST',
 			url: 'api/profile',
 			data: $scope.profile,
-			checkForm: true,
+			checkForm: true
 		});
 	};
 });

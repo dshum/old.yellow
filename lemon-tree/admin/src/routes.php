@@ -63,7 +63,14 @@ Route::filter('admin.auth', function() {
 
 	}
 
-	if ( ! $user = User::find($userId)) {
+	$user = \Cache::tags('User')->rememberForever(
+		"getUserById($userId)",
+		function() use ($userId) {
+			return User::find($userId);
+		}
+	);
+
+	if ( ! $user) {
 		$scope['message'] = "Пользователь с идентификатором $userId не найден.";
 		return Response::json($scope, 401);
 	}
@@ -74,13 +81,13 @@ Route::filter('admin.auth', function() {
 
 Route::group(array('prefix' => 'admin'), function() {
 
-	Route::get('/', 'LemonTree\Controllers\HomeController@getIndex');
+	Route::get('/', 'LemonTree\Controllers\HomeController@index');
 
 });
 
 Route::group(array('prefix' => 'api'), function() {
 
-	Route::post('login', 'LemonTree\Controllers\LoginController@postLogin');
+	Route::post('login', 'LemonTree\Controllers\LoginController@login');
 
 });
 
@@ -89,13 +96,13 @@ Route::group(array(
 	'before' => 'admin.auth'
 ), function() {
 
-	Route::get('user', 'LemonTree\Controllers\LoginController@getUser');
+	Route::get('user', 'LemonTree\Controllers\LoginController@user');
 
-	Route::post('profile', 'LemonTree\Controllers\ProfileController@postSave');
+	Route::post('profile', 'LemonTree\Controllers\ProfileController@save');
 
 	Route::post('group/add', 'LemonTree\Controllers\GroupController@save');
 
-	Route::get('group/{id}', 'LemonTree\Controllers\GroupController@getGroup')->
+	Route::get('group/{id}', 'LemonTree\Controllers\GroupController@group')->
 		where('id', '[0-9]+');
 
 	Route::post('group/{id}', 'LemonTree\Controllers\GroupController@save')->
@@ -104,25 +111,25 @@ Route::group(array(
 	Route::delete('group/{id}', 'LemonTree\Controllers\GroupController@delete')->
 		where('id', '[0-9]+');
 
-	Route::get('group/{id}/items', 'LemonTree\Controllers\GroupController@getItemPermissions')->
+	Route::get('group/{id}/items', 'LemonTree\Controllers\GroupController@itemPermissions')->
 		where('id', '[0-9]+');
 
-	Route::post('group/{id}/items', 'LemonTree\Controllers\GroupController@postSaveItemPermissions')->
+	Route::post('group/{id}/items', 'LemonTree\Controllers\GroupController@saveItemPermissions')->
 		where('id', '[0-9]+');
 
-	Route::get('group/{id}/elements', 'LemonTree\Controllers\GroupController@getElementPermissions')->
+	Route::get('group/{id}/elements', 'LemonTree\Controllers\GroupController@elementPermissions')->
 		where('id', '[0-9]+');
 
-	Route::post('group/{id}/elements', 'LemonTree\Controllers\GroupController@postSaveElementPermissions')->
+	Route::post('group/{id}/elements', 'LemonTree\Controllers\GroupController@saveElementPermissions')->
 		where('id', '[0-9]+');
 
-	Route::get('group/list', 'LemonTree\Controllers\GroupController@getList');
+	Route::get('group/list', 'LemonTree\Controllers\GroupController@groups');
 
-	Route::get('user/form', 'LemonTree\Controllers\UserController@getForm');
+	Route::get('user/form', 'LemonTree\Controllers\UserController@form');
 
 	Route::post('user/add', 'LemonTree\Controllers\UserController@save');
 
-	Route::get('user/{id}', 'LemonTree\Controllers\UserController@getUser')->
+	Route::get('user/{id}', 'LemonTree\Controllers\UserController@user')->
 		where('id', '[0-9]+');
 
 	Route::post('user/{id}', 'LemonTree\Controllers\UserController@save')->
@@ -131,41 +138,49 @@ Route::group(array(
 	Route::delete('user/{id}', 'LemonTree\Controllers\UserController@delete')->
 		where('id', '[0-9]+');
 
-	Route::get('log', 'LemonTree\Controllers\LogController@getLog');
+	Route::get('log', 'LemonTree\Controllers\LogController@log');
 
-	Route::get('log/form', 'LemonTree\Controllers\LogController@getForm');
+	Route::get('log/form', 'LemonTree\Controllers\LogController@form');
 
-	Route::get('user/list', 'LemonTree\Controllers\UserController@getList');
+	Route::get('user/list', 'LemonTree\Controllers\UserController@users');
 
-	Route::get('group/{id}/user/list', 'LemonTree\Controllers\UserController@getListByGroup')->
+	Route::get('group/{id}/user/list', 'LemonTree\Controllers\UserController@groupUsers')->
 		where('id', '[0-9]+');
 
-	Route::get('browse/{classId?}', 'LemonTree\Controllers\BrowseController@getIndex');
+	Route::get('browse/{classId?}', 'LemonTree\Controllers\BrowseController@index');
 
-	Route::get('search/items', 'LemonTree\Controllers\SearchController@getItems');
+	Route::get('search/items', 'LemonTree\Controllers\SearchController@items');
 
-	Route::get('search/item/{class}', 'LemonTree\Controllers\SearchController@getItem');
+	Route::get('search/item/{class}', 'LemonTree\Controllers\SearchController@item');
 
-	Route::get('search/{class}', 'LemonTree\Controllers\BrowseController@getSearch');
+	Route::get('search/{class}', 'LemonTree\Controllers\BrowseController@search');
 
-	Route::get('trash/items', 'LemonTree\Controllers\TrashController@getItems');
+	Route::get('trash/items', 'LemonTree\Controllers\TrashController@items');
 
-	Route::get('trash/item/{class}', 'LemonTree\Controllers\TrashController@getItem');
+	Route::get('trash/item/{class}', 'LemonTree\Controllers\TrashController@item');
 
-	Route::get('trash/{class}', 'LemonTree\Controllers\BrowseController@getTrash');
+	Route::get('trash/{class}', 'LemonTree\Controllers\BrowseController@trash');
 
-	Route::get('binds/{classId?}', 'LemonTree\Controllers\BrowseController@getBinds');
+	Route::get('binds/{classId?}', 'LemonTree\Controllers\BrowseController@binds');
 
-	Route::get('plugin/browse/{classId}', 'LemonTree\Controllers\PluginController@getBrowsePlugin');
+	Route::get('plugin/browse/{classId}', 'LemonTree\Controllers\PluginController@browsePlugin');
 
-	Route::get('favorites', 'LemonTree\Controllers\FavoritesController@getList');
+	Route::get('favorites', 'LemonTree\Controllers\FavoritesController@favorites');
 
-	Route::post('favorites/{classId}', 'LemonTree\Controllers\FavoritesController@postToggle');
+	Route::post('favorites/{classId}', 'LemonTree\Controllers\FavoritesController@toggle');
 
 	Route::get('tree', 'LemonTree\Controllers\TreeController@show');
 
-	Route::get('hint/{class}', 'LemonTree\Controllers\HintController@getHint');
+	Route::get('hint/{class}', 'LemonTree\Controllers\HintController@hint');
 
-	Route::get('element/{classId}', 'LemonTree\Controllers\EditController@getElement');
+	Route::get('element/{classId}', 'LemonTree\Controllers\EditController@edit');
+
+	Route::post('copy/{classId}', 'LemonTree\Controllers\EditController@copy');
+
+	Route::post('move/{classId}', 'LemonTree\Controllers\EditController@move');
+
+	Route::post('delete/{classId}', 'LemonTree\Controllers\EditController@delete');
+
+	Route::post('restore/{classId}', 'LemonTree\Controllers\EditController@restore');
 
 });

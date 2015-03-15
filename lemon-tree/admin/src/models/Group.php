@@ -34,7 +34,9 @@ class Group extends Model {
 
 	public function flush()
 	{
-//		\Cache::tags('Group')->flush();
+		\Cache::tags('Group')->flush();
+
+		\Cache::forget("getGroupById({$this->id})");
 	}
 
 	public function users()
@@ -91,12 +93,22 @@ class Group extends Model {
 
 	public function getItemPermission($class)
 	{
-		return $this->itemPermissions()->where('class', $class)->first();
+		return \Cache::tags("GroupItemPermission.{$this->id}")->rememberForever(
+			"Group.{$this->id}.itemPermission.$class",
+			function () use ($class) {
+				return $this->itemPermissions()->where('class', $class)->first();
+			}
+		);
 	}
 
 	public function getElementPermission($classId)
 	{
-		return $this->elementPermissions()->where('class_id', $classId)->first();
+		return \Cache::tags("GroupElementPermission.{$this->id}")->rememberForever(
+			"Group.{$this->id}.elementPermission.$classId",
+			function () use ($classId) {
+				return $this->elementPermissions()->where('class_id', $classId)->first();
+			}
+		);
 	}
 
 	public function getItemAccess(Item $item)

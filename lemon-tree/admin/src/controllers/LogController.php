@@ -10,7 +10,7 @@ class LogController extends Controller {
 
 	const DEFAULT_PER_PAGE = 10;
 
-	public function getForm()
+	public function form()
 	{
 		$scope = array();
 
@@ -49,7 +49,7 @@ class LogController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getLog()
+	public function log()
 	{
 		$scope = array();
 

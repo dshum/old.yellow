@@ -67,11 +67,14 @@
 <script src="<?=asset('packages/lemon-tree/admin/js/components/navbar/navbar-controller.js')?>"></script>
 
 <script src="<?=asset('packages/lemon-tree/admin/js/components/tree/tree.js')?>"></script>
+<script src="<?=asset('packages/lemon-tree/admin/js/components/tree/tree-controller.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/tree/tree-directive.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/tree/subtree-directive.js')?>"></script>
 
 <script src="<?=asset('packages/lemon-tree/admin/js/components/modal/modal.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/modal/modal-instance-controller.js')?>"></script>
+	<script src="<?=asset('packages/lemon-tree/admin/js/components/modal/move-instance-controller.js')?>"></script>
+	<script src="<?=asset('packages/lemon-tree/admin/js/components/modal/copy-instance-controller.js')?>"></script>
 
 <script src="<?=asset('packages/lemon-tree/admin/js/components/context-menu/context-menu.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/context-menu/context-menu-directive.js')?>"></script>

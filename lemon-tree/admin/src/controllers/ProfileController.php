@@ -6,7 +6,7 @@ use LemonTree\Models\UserAction;
 
 class ProfileController extends Controller {
 
-	public function postSave()
+	public function save()
 	{
 		$scope = array();
 
@@ -60,7 +60,7 @@ class ProfileController extends Controller {
 			'ID '.$loggedUser->id.' ('.$loggedUser->login.')'
 		);
 
-		$scope['status'] = 'ok';
+		$scope['state'] = 'ok';
 
 		return \Response::json($scope);
 	}

@@ -48,7 +48,7 @@ alert.factory('Alert', function($rootScope, $injector) {
 								return {
 									errors: html
 								};
-							},
+							}
 						}
 					});
 
@@ -67,5 +67,20 @@ alert.factory('Alert', function($rootScope, $injector) {
 
 			$.unblockUI();
 		},
+		message: function(message) {
+			var modal = $injector.get('$modal');
+
+			var modalInstance = modal.open({
+				templateUrl: 'alert.html',
+				controller: 'ModalInstanceController',
+				resolve: {
+					data: function() {
+						return {
+							message: message
+						};
+					}
+				}
+			});
+		}
 	};
 });

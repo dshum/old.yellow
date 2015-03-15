@@ -7,7 +7,7 @@ use LemonTree\Models\UserAction;
 
 class LoginController extends Controller {
 
-	public function getUser()
+	public function user()
 	{
 		$scope = array();
 
@@ -20,7 +20,7 @@ class LoginController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function postLogin()
+	public function login()
 	{
 		$scope = array();
 

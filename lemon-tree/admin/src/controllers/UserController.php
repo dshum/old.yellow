@@ -8,72 +8,16 @@ use LemonTree\Models\UserAction;
 
 class UserController extends Controller {
 
-	public function getForm()
-	{
-		$scope = array();
-
-		$loggedUser = LoggedUser::getUser();
-
-		if ( ! $loggedUser->hasAccess('admin')) {
-			$scope['state'] = 'error_admin_access_denied';
-			return \Response::json($scope);
-		}
-
-		$groupList = Group::orderBy('name', 'asc')->get();
-
-		$scope['groupList'] = $groupList;
-
-		return \Response::json($scope);
-	}
-
-	public function getUser($id)
-	{
-		$scope = array();
-
-		$user = User::find($id);
-
-		if ( ! $user) {
-			$scope['state'] = 'error_user_not_found';
-			return \Response::json($scope);
-		}
-
-		$loggedUser = LoggedUser::getUser();
-
-		if ( ! $loggedUser->hasAccess('admin')) {
-			$scope['state'] = 'error_admin_access_denied';
-			return \Response::json($scope);
-		}
-
-		if (
-			$loggedUser->id == $user->id
-			|| $user->isSuperUser()
-		) {
-			$scope['state'] = 'error_user_access_denied';
-			return \Response::json($scope);
-		}
-
-		$userGroups = $user->getGroups();
-
-		$userGroupMap = array();
-
-		foreach ($userGroups as $group) {
-			$userGroupMap[$group->id] = true;
-		}
-
-		$user->groups = $userGroupMap;
-		$user->isSuperUser = $user->isSuperUser();
-		$user->password = null;
-
-		$scope['user'] = $user;
-
-		return \Response::json($scope);
-	}
-
 	public function delete($id)
 	{
 		$scope = array();
 
-		$user = User::find($id);
+		$user = \Cache::tags('User')->rememberForever(
+			"getUserById($id)",
+			function() use ($id) {
+				return User::find($id);
+			}
+		);
 
 		if ( ! $user) {
 			$scope['state'] = 'error_user_not_found';
@@ -126,7 +70,12 @@ class UserController extends Controller {
 		$user = null;
 
 		if ($id) {
-			$user = User::find($id);
+			$user = \Cache::tags('User')->rememberForever(
+				"getUserById($id)",
+				function() use ($id) {
+					return User::find($id);
+				}
+			);
 
 			if ( ! $user) {
 				$scope['state'] = 'error_user_not_found';
@@ -247,12 +196,12 @@ class UserController extends Controller {
 		$user->password = null;
 
 		$scope['user'] = $user;
-		$scope['status'] = 'ok';
+		$scope['state'] = 'ok';
 
 		return \Response::json($scope);
 	}
 
-	public function getList()
+	public function form()
 	{
 		$scope = array();
 
@@ -263,7 +212,83 @@ class UserController extends Controller {
 			return \Response::json($scope);
 		}
 
-		$userList = User::orderBy('login', 'asc')->get();
+		$groupList = \Cache::tags('Group')->rememberForever(
+			"getGroupList.orderBy(name.asc)",
+			function() {
+				return Group::orderBy('name', 'asc')->get();
+			}
+		);
+
+		$scope['groupList'] = $groupList;
+
+		return \Response::json($scope);
+	}
+
+	public function user($id)
+	{
+		$scope = array();
+
+		$user = \Cache::tags('User')->rememberForever(
+			"getUserById($id)",
+			function() use ($id) {
+				return User::find($id);
+			}
+		);
+
+		if ( ! $user) {
+			$scope['state'] = 'error_user_not_found';
+			return \Response::json($scope);
+		}
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ( ! $loggedUser->hasAccess('admin')) {
+			$scope['state'] = 'error_admin_access_denied';
+			return \Response::json($scope);
+		}
+
+		if (
+			$loggedUser->id == $user->id
+			|| $user->isSuperUser()
+		) {
+			$scope['state'] = 'error_user_access_denied';
+			return \Response::json($scope);
+		}
+
+		$userGroups = $user->getGroups();
+
+		$userGroupMap = array();
+
+		foreach ($userGroups as $group) {
+			$userGroupMap[$group->id] = true;
+		}
+
+		$user->groups = $userGroupMap;
+		$user->isSuperUser = $user->isSuperUser();
+		$user->password = null;
+
+		$scope['user'] = $user;
+
+		return \Response::json($scope);
+	}
+
+	public function users()
+	{
+		$scope = array();
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ( ! $loggedUser->hasAccess('admin')) {
+			$scope['state'] = 'error_admin_access_denied';
+			return \Response::json($scope);
+		}
+
+		$userList = \Cache::tags('User')->rememberForever(
+			"getUserList.orderBy(login.asc)",
+			function() {
+				return User::orderBy('login', 'asc')->get();
+			}
+		);
 
 		foreach ($userList as $user) {
 			$user->groups = $user->getGroups();
@@ -275,11 +300,16 @@ class UserController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getListByGroup($id)
+	public function groupUsers($id)
 	{
 		$scope = array();
 
-		$activeGroup = Group::find($id);
+		$activeGroup = \Cache::rememberForever(
+			"getGroupById($id)",
+			function() use ($id) {
+				return Group::find($id);
+			}
+		);
 
 		if ( ! $activeGroup) {
 			$scope['state'] = 'error_group_not_found';
@@ -298,7 +328,12 @@ class UserController extends Controller {
 			return \Response::json($scope);
 		}
 
-		$userList = $activeGroup->users()->orderBy('login', 'asc')->get();
+		$userList = \Cache::tags('User')->rememberForever(
+			"getUserListByGroup({$activeGroup->id}).orderBy(login.asc)",
+			function() use ($activeGroup) {
+				return $activeGroup->users()->orderBy('login', 'asc')->get();
+			}
+		);
 
 		foreach ($userList as $user) {
 			$user->groups = $user->getGroups();

@@ -46,7 +46,7 @@ users.controller('UsersController', function(
 				data: function() {
 					return {
 						message: 'Удалить группу «'+group.name+'»?',
-						textOk: 'Удалить',
+						textOk: 'Удалить'
 					};
 				}
 			}
@@ -57,7 +57,7 @@ users.controller('UsersController', function(
 				$.blockUI();
 				$http({
 					method: 'DELETE',
-					url: 'api/group/'+group.id,
+					url: 'api/group/'+group.id
 				}).then(
 					function(response) {
 						groupList();
@@ -66,6 +66,7 @@ users.controller('UsersController', function(
 					},
 					function(error) {
 						console.log(error);
+						$.unblockUI();
 					}
 				);
 			},
@@ -82,7 +83,7 @@ users.controller('UsersController', function(
 				data: function() {
 					return {
 						message: 'Удалить пользователя «'+user.login+'»?',
-						textOk: 'Удалить',
+						textOk: 'Удалить'
 					};
 				}
 			}
@@ -93,7 +94,7 @@ users.controller('UsersController', function(
 				$.blockUI();
 				$http({
 					method: 'DELETE',
-					url: 'api/user/'+user.id,
+					url: 'api/user/'+user.id
 				}).then(
 					function(response) {
 						userList();
@@ -101,6 +102,7 @@ users.controller('UsersController', function(
 					},
 					function(error) {
 						console.log(error);
+						$.unblockUI();
 					}
 				);
 			},

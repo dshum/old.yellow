@@ -8,7 +8,7 @@ use LemonTree\LoggedUser;
 
 class TrashController extends Controller {
 
-	public function getItems()
+	public function items()
 	{
 		$scope = array();
 

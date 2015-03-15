@@ -41,15 +41,16 @@ class AdminServiceProvider extends ServiceProvider {
 			__DIR__.'/../../assets' => public_path('packages/lemon-tree/admin'),
 		]);
 
-		/*
+		\DB::enableQueryLog();
+
 		\Cache::extend('file', function($app) {
-			return new \Illuminate\Cache\Repository(
-				new \LemonTree\CustomFileStore($app['files'], $app['config']['cache.path'])
+			return \Cache::repository(
+				new \LemonTree\FileStore(
+					$app['files'],
+					config('cache.stores.file.path')
+				)
 			);
 		});
-		 */
-
-		\DB::enableQueryLog();
 
 		\Blade::extend(function($value) {
 			return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);

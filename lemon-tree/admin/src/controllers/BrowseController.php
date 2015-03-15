@@ -8,7 +8,7 @@ use LemonTree\LoggedUser;
 
 class BrowseController extends Controller {
 
-	public function getIndex($classId = null)
+	public function index($classId = null)
 	{
 		$scope = array();
 
@@ -57,7 +57,7 @@ class BrowseController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getTrash($class)
+	public function trash($class)
 	{
 		$scope = array();
 
@@ -117,7 +117,7 @@ class BrowseController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getSearch($class)
+	public function search($class)
 	{
 		$scope = array();
 
@@ -143,7 +143,7 @@ class BrowseController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getBinds($classId = null)
+	public function binds($classId = null)
 	{
 		$scope = array();
 

@@ -2,7 +2,7 @@
 
 class HomeController extends Controller {
 
-	public function getIndex()
+	public function index()
 	{
 		$scope = array();
 

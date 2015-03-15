@@ -47,7 +47,9 @@ browse.controller('TrashController', function(
 					$scope.emptyTrash = $scope.itemList.length ? false : true;
 					$('#items-container').slideDown('fast', function() {
 						setTimeout(function() {
-							getElementListView(className);
+							if ($scope.itemList.length) {
+								getElementListView(className);
+							}
 						});
 					});
 				} else if (response.data.currentItem) {

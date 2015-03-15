@@ -40,7 +40,7 @@ users.controller('UserController', function(
 			method: 'POST',
 			url: (id ? 'api/user/'+id : 'api/user/add'),
 			data: $scope.user,
-			checkForm: true,
+			checkForm: true
 		}).then(
 			function(response) {
 				if (response.data.user) {

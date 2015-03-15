@@ -32,7 +32,7 @@ class GroupElementPermission extends Model {
 
 	public function flush()
 	{
-//		\Cache::tags('GroupElementPermission.'.$this->group_id)->flush();
+		\Cache::tags('GroupElementPermission.'.$this->group_id)->flush();
 	}
 
 }

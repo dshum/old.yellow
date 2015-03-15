@@ -6,7 +6,7 @@ class HintController extends Controller {
 
 	const HINT_LIMIT = 20;
 
-	public function getHint($class)
+	public function hint($class)
 	{
 		$scope = array();
 
@@ -68,7 +68,7 @@ class HintController extends Controller {
 		return \Response::json($scope);
 	}
 
-	public function getMultiHint($itemName, $propertyName)
+	public function multiHint($itemName, $propertyName)
 	{
 		$scope = array();
 

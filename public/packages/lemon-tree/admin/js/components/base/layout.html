@@ -38,7 +38,9 @@
 			</div>
 		</div>
 	</div>
-	<tree></tree>
+	<div ng-controller="TreeController">
+		<tree></tree>
+	</div>
 </div>
 
 <div class="main">
@@ -59,6 +61,37 @@
 	</div>
 </script>
 
+<script type="text/ng-template" id="copy.html">
+	<div class="modal-body">
+		<div class="well">
+			<div class="form-group" ng-repeat="property in data.ones">
+				<property type="property.class" mode="move" view="property.moveView"></property>
+			</div>
+			<div ng-show=" ! data.ones.length">
+				<label>Родительский элемент:</label> Корень сайта.
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-warning" ng-click="ok()">Копировать</button>
+		<button class="btn btn-default" ng-click="cancel()">Отмена</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="move.html">
+	<div class="modal-body">
+		<div class="well">
+			<div class="form-group" ng-repeat="property in data.ones">
+				<property type="property.class" mode="move" view="property.moveView"></property>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-warning" ng-click="ok()">Переместить</button>
+		<button class="btn btn-default" ng-click="cancel()">Отмена</button>
+	</div>
+</script>
+
 <script type="text/ng-template" id="modal.html">
 	<div class="modal-body">
 		{{data.message}}
@@ -66,5 +99,14 @@
 	<div class="modal-footer">
 		<button class="btn btn-warning" ng-click="ok()">{{textOk || 'OK'}}</button>
 		<button class="btn btn-default" ng-click="cancel()">{{textCancel || 'Отмена'}}</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="alert.html">
+	<div class="modal-body">
+		{{data.message}}
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default" ng-click="cancel()">{{textCancel || 'Закрыть'}}</button>
 	</div>
 </script>

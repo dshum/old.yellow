@@ -4,8 +4,8 @@
 		<li ng-if="currentItem"><a ui-sref="base.trash">Корзина</a></li>
 		<li ng-if="currentItem" class="active">{{currentItem.title}}</li>
 	</ul>
-	<div class="well">
-		<div ng-show="itemList.length" id="items-container">
+	<div ng-show="itemList.length" class="well">
+		<div id="items-container">
 			<table class="element-list-header">
 				<tr>
 					<td>

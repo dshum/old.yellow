@@ -16,6 +16,23 @@ tree.directive('tree', function(
 			scope.treeView = [];
 			scope.subTree = [];
 
+			scope.refreshTree = function() {
+				$http({
+					method: 'GET',
+					url: 'api/tree'
+				}).then(
+					function(response) {
+						scope.itemList = response.data.itemList;
+						scope.itemElementList = response.data.itemElementList;
+						scope.treeCount = response.data.treeCount;
+						scope.subTree = response.data.subTree;
+					},
+					function(error) {
+						console.log(error);
+					}
+				);
+			};
+
 			scope.isTreeView = function(classId) {
 				if (typeof(scope.treeView[classId]) !== 'undefined') {
 					return scope.treeView[classId];

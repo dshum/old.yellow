@@ -1,5 +1,6 @@
 <?php namespace LemonTree\Properties;
 
+use LemonTree\ElementInterface;
 use LemonTree\Item;
 
 class OrderProperty extends BaseProperty {
@@ -35,11 +36,13 @@ class OrderProperty extends BaseProperty {
 
 	public function set($field = null)
 	{
+		if ( ! $this->element instanceof ElementInterface) return false;
+
 		$name = $this->getName();
 
 		try {
-			$maxOrder = $this->getItem()->getClass()->max($name);
-			$this->element->$name = $maxOrder + 1;
+			$maxOrder = $this->element->max($name);
+			$this->element->$name = (int)$maxOrder + 1;
 		} catch (\Exception $e) {
 			$this->element->$name = 1;
 		}

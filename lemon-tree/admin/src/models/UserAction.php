@@ -32,7 +32,7 @@ class UserAction extends Model {
 
 	public function flush()
 	{
-//		\Cache::tags('UserAction')->flush();
+		\Cache::tags('UserAction')->flush();
 	}
 
 	public function user()

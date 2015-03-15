@@ -54,7 +54,9 @@ class User extends Model {
 
 	public function flush()
 	{
-//		\Cache::tags('User', 'Group')->flush();
+		\Cache::tags('User', 'Group')->flush();
+
+		\Cache::forget("getUserById({$this->id})");
 	}
 
 	public function isSuperUser()
@@ -98,7 +100,12 @@ class User extends Model {
 	public function getGroups()
 	{
 		if ( ! $this->userGroups) {
-			$this->userGroups = $this->groups()->get();
+			$this->userGroups = \Cache::tags('User', 'Group')->rememberForever(
+				"User.{$this->id}.groups",
+				function() {
+					return $this->groups()->get();
+				}
+			);
 		}
 
 		return $this->userGroups;

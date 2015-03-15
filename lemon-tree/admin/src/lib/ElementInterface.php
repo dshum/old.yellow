@@ -2,14 +2,6 @@
 
 interface ElementInterface {
 
-	public static function getCacheKey($id);
-
-	public static function getByClassId($classId);
-
-	public static function getWithTrashedByClassId($classId);
-
-	public static function getOnlyTrashedByClassId($classId);
-
 	public function getItem();
 
 	public function getClass();
@@ -28,14 +20,6 @@ interface ElementInterface {
 
 	public function getFolder();
 
-	public function setParent($parent);
-
-	public function getParent();
-
-	public function getParentList();
-
-	public function getChildItemList();
-
 	public function getHref();
 
 	public function getBrowseUrl();
@@ -53,9 +37,5 @@ interface ElementInterface {
 	public function getTrashUrl();
 
 	public function getRestoreUrl();
-
-	public function deleteFromTrash();
-
-	public function copy();
 
 }

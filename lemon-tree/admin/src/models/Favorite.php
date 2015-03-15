@@ -31,14 +31,19 @@ class Favorite extends Model {
 
 	public function flush()
 	{
-//		\Cache::tags('Favorite')->flush();
+		\Cache::tags('Favorite')->flush();
 	}
 
 	public function getElement()
 	{
-		return $this->class_id
-			? Element::getWithTrashedByClassId($this->class_id)
-			: null;
+		if ( ! $this->class_id) return null;
+
+		return \Cache::rememberForever(
+			'Favorite.'.$this->class_id,
+			function() {
+				return Element::getWithTrashedByClassId($this->class_id);
+			}
+		);
 	}
 
 }
