@@ -8,7 +8,8 @@ var app = angular.module('adminApp', [
 	'AlertCtrl', 'AuthCtrl', 'FormCtrl',
 	'NavbarCtrl', 'TreeCtrl', 'FavoritesCtrl',
 	'LoginCtrl', 'UsersCtrl',
-	'BrowseCtrl', 'EditCtrl', 'FilemanagerCtrl', 'PluginCtrl',
+	'BrowseCtrl', 'OrderCtrl', 'EditCtrl',
+	'FilemanagerCtrl', 'PluginCtrl',
 ]);
 
 app.run(function(
@@ -90,6 +91,16 @@ app.config([
 			url: '/browse/{classId:[A-Za-z\.0-9]+}',
 			templateUrl: templatePath('components/browse/browse'),
 			controller: 'BrowseController'
+		})
+		.state('base.order', {
+			url: '/order/{class:[A-Za-z\.0-9]+}',
+			templateUrl: templatePath('components/order/order'),
+			controller: 'OrderController'
+		})
+		.state('base.orderElement', {
+			url: '/order/{class:[A-Za-z\.0-9]+}/{classId:[A-Za-z\.0-9]+}',
+			templateUrl: templatePath('components/order/order'),
+			controller: 'OrderController'
 		})
 		.state('base.editElement', {
 			url: '/edit/{classId:[A-Za-z\.0-9]+}',

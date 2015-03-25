@@ -20,12 +20,11 @@
 				<tr>
 					<td nowrap><span class="h2 hand dashed">{{elementListView.item.title}}</span></td>
 					<td nowrap>
-						<div class="order-link"><img src="/packages/lemon-tree/admin/img/order.gif" alt="" /> <a href><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</a></div>
-					</td>
+                        <div ng-show="currentElement" class="order-link"><img src="/packages/lemon-tree/admin/img/order.gif" alt="" /> <a ui-sref="base.orderElement({class: elementListView.item.nameId, classId: currentElement.classId})"><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</a></div>
+                        <div ng-hide="currentElement" class="order-link"><img src="/packages/lemon-tree/admin/img/order.gif" alt="" /> <a ui-sref="base.order({class: elementListView.item.nameId})"><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</a></div>
+                    </td>
 					<td width="90%"></td>
-					<td nowrap>
-						<a ui-sref="base.search">Поиск элементов</a>
-					</td>
+					<td nowrap><a ui-sref="base.search">Поиск элементов</a></td>
 				</tr>
 			</tbody>
 		</table>

@@ -748,3 +748,10 @@ div.item-trash-active .badge {
 div.search-elements {
 	border: 1px solid transparent;
 }
+
+select.multi-element-list {
+	padding: 5px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	font-size: 120%;
+}

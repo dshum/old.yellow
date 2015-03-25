@@ -57,6 +57,9 @@
 <script src="<?=asset('packages/lemon-tree/admin/js/components/browse/search-controller.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/browse/trash-controller.js')?>"></script>
 
+<script src="<?=asset('packages/lemon-tree/admin/js/components/order/order.js')?>"></script>
+<script src="<?=asset('packages/lemon-tree/admin/js/components/order/order-controller.js')?>"></script>
+
 <script src="<?=asset('packages/lemon-tree/admin/js/components/edit/edit.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/edit/edit-controller.js')?>"></script>
 

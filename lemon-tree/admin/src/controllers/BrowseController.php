@@ -15,7 +15,6 @@ class BrowseController extends Controller {
 		$loggedUser = LoggedUser::getUser();
 
 		if ($classId) {
-
 			$currentElement = Element::getByClassId($classId);
 
 			if ( ! $currentElement) {
@@ -27,11 +26,8 @@ class BrowseController extends Controller {
 				$scope['state'] = 'error_element_access_denied';
 				return \Response::json($scope);
 			}
-
 		} else {
-
 			$currentElement = null;
-
 		}
 
 		$site = \App::make('site');
@@ -150,7 +146,6 @@ class BrowseController extends Controller {
 		$loggedUser = LoggedUser::getUser();
 
 		if ($classId) {
-
 			$currentElement = Element::getByClassId($classId);
 
 			if ( ! $currentElement) {
@@ -162,11 +157,8 @@ class BrowseController extends Controller {
 				$scope['state'] = 'error_element_access_denied';
 				return \Response::json($scope);
 			}
-
 		} else {
-
 			$currentElement = null;
-
 		}
 
 		$site = \App::make('site');
@@ -276,7 +268,6 @@ class BrowseController extends Controller {
 		}
 
 		if ( ! $loggedUser->isSuperUser()) {
-
 			$permissionDenied = true;
 			$deniedElementList = array();
 			$allowedElementList = array();
@@ -284,7 +275,6 @@ class BrowseController extends Controller {
 			$groupList = $loggedUser->getGroups();
 
 			foreach ($groupList as $group) {
-
 				$itemPermission = $group->getItemPermission($item->getName())
 					? $group->getItemPermission($item->getName())->permission
 					: $group->default_permission;
@@ -314,13 +304,10 @@ class BrowseController extends Controller {
 						$allowedElementList[$id] = $id;
 					}
 				}
-
 			}
-
 		}
 
 		if ($search) {
-
 			$elementListCriteria = $item->getClass()->where(
 				function($query) use ($item, $propertyList, $loggedUser) {
 					$search = $loggedUser->getParameter('search');
@@ -345,13 +332,9 @@ class BrowseController extends Controller {
 					$loggedUser->setParameter('search', $search);
 				}
 			);
-
 		} elseif ($trashed) {
-
 			$elementListCriteria = $item->getClass()->onlyTrashed();
-
 		} else {
-
 			$elementListCriteria = $item->getClass()->where(
 				function($query) use ($propertyList, $currentElement) {
 					if ($currentElement) {
@@ -378,11 +361,9 @@ class BrowseController extends Controller {
 					}
 				}
 			);
-
 		}
 
 		if ( ! $loggedUser->isSuperUser()) {
-
 			if (
 				$permissionDenied
 				&& sizeof($allowedElementList)
@@ -396,7 +377,6 @@ class BrowseController extends Controller {
 			} elseif ($permissionDenied) {
 				return $scope;
 			}
-
 		}
 
 		$total = $elementListCriteria->count();
@@ -509,9 +489,7 @@ class BrowseController extends Controller {
 		}
 
 		if ( ! $loggedUser->isSuperUser()) {
-
 			foreach ($groupList as $group) {
-
 				$itemPermission = $group->getItemPermission($item->getName())
 					? $group->getItemPermission($item->getName())->permission
 					: $group->default_permission;
@@ -551,15 +529,12 @@ class BrowseController extends Controller {
 				}
 
 			}
-
 		} else {
-
 			foreach ($elementList as $element) {
 				$copyAccessMap[$element->id] = $element->id;
 				$updateAccessMap[$element->id] = $element->id;
 				$deleteAccessMap[$element->id] = $element->id;
 			}
-
 		}
 
 		$scope['currentElement'] = $currentElement;

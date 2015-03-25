@@ -6,6 +6,7 @@ modal.controller('MoveInstanceController', function(
 	$scope.ok = function () {
 		var classId = data.classId;
 		var ones = data.ones;
+		var reload = data.reload || false;
 		var fields = {};
 
 		for (var i in ones) {
@@ -23,7 +24,9 @@ modal.controller('MoveInstanceController', function(
 		}).then(
 			function(response) {
 				if (response.data.state == 'ok') {
-					$state.reload();
+					if (reload) {
+						$state.reload();
+					}
 					$rootScope.refreshTree();
 				}
 				$modalInstance.close();

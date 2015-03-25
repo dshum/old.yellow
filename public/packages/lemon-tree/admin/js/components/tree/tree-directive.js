@@ -1,5 +1,6 @@
 tree.directive('tree', function(
-	$http, $window, $state, Helper, Favorite
+	$rootScope, $http, $window, $state, $injector,
+	Helper, Favorite
 ) {
     return {
 		restrict: 'E',
@@ -8,6 +9,92 @@ tree.directive('tree', function(
 		link: function(scope, element, attrs) {
 			var node = attrs.node;
 			var tree = element.parent().data('tree');
+
+			var copy = function(classId) {
+				$http({
+					method: 'GET',
+					url: 'api/element/'+classId
+				}).then(
+					function(response) {
+						var currentElement = response.data.currentElement;
+						var ones = response.data.ones;
+
+						if ( ! currentElement) return false;
+
+						var modal = $injector.get('$modal');
+
+						var modalInstance = modal.open({
+							templateUrl: 'copy.html',
+							controller: 'CopyInstanceController',
+							resolve: {
+								data: function() {
+									return {
+										classId: classId,
+										ones: ones,
+										redirect: false
+									};
+								}
+							}
+						});
+					},
+					function(error) {
+						console.log(error);
+					}
+				);
+			};
+
+			var move = function(classId) {
+				$http({
+					method: 'GET',
+					url: 'api/element/'+classId
+				}).then(
+					function(response) {
+						var currentElement = response.data.currentElement;
+						var ones = response.data.ones;
+
+						if ( ! currentElement) return false;
+
+						var modal = $injector.get('$modal');
+
+						var modalInstance = modal.open({
+							templateUrl: 'move.html',
+							controller: 'MoveInstanceController',
+							resolve: {
+								data: function() {
+									return {
+										classId: classId,
+										ones: ones,
+										reload: false
+									};
+								}
+							}
+						});
+					},
+					function(error) {
+						console.log(error);
+					}
+				);
+			};
+
+			var drop = function(classId) {
+				$.blockUI();
+
+				$http({
+					method: 'POST',
+					url: 'api/delete/'+classId
+				}).then(
+					function(response) {
+						if (response.data.state == 'ok') {
+							$rootScope.refreshTree();
+						}
+						$.unblockUI();
+					},
+					function(error) {
+						console.log(error);
+						$.unblockUI();
+					}
+				);
+			};
 
 			scope.itemList = [];
 			scope.itemElementList = [];
@@ -63,11 +150,14 @@ tree.directive('tree', function(
 					$state.go('base.browseElement', {classId: $itemScope.element.classId});
 				}],
 				null,
+				['Копировать', function ($itemScope) {
+					copy($itemScope.element.classId);
+				}],
 				['Переместить', function ($itemScope) {
-
+					move($itemScope.element.classId);
 				}],
 				['Удалить', function ($itemScope) {
-
+					drop($itemScope.element.classId);
 				}],
 				null,
 				['Избранное', function ($itemScope) {

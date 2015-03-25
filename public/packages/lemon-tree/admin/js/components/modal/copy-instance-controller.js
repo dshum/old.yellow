@@ -6,6 +6,7 @@ modal.controller('CopyInstanceController', function(
 	$scope.ok = function () {
 		var classId = data.classId;
 		var ones = data.ones;
+		var redirect = data.redirect || false;
 		var fields = {};
 
 		for (var i in ones) {
@@ -23,7 +24,9 @@ modal.controller('CopyInstanceController', function(
 		}).then(
 			function(response) {
 				if (response.data.clone) {
-					$state.go('base.editElement', {classId: response.data.clone});
+					if (redirect) {
+						$state.go('base.editElement', {classId: response.data.clone});
+					}
 					$rootScope.refreshTree();
 				}
 				$modalInstance.close();

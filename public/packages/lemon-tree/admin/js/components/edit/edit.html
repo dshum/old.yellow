@@ -14,8 +14,8 @@
 		<button ng-click="copy()" ng-hide="trashed" type="button" class="btn btn-default"><span class="halflings halflings-duplicate"></span> Копировать</button>
 		<button ng-click="move()" ng-disabled="! ones.length" type="button" ng-hide="trashed" class="btn btn-default"><span class="halflings halflings-arrow-right"></span> Переместить</button>
 		<button ng-click="restore()" type="button" ng-show="trashed" class="btn btn-default"><span class="halflings halflings-arrow-left"></span> Восстановить</button>
-		<button ng-click="delete()" type="button" ng-hide="trashed" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
-		<button ng-click="delete()" type="button" ng-show="trashed" class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> Удалить</button>
+		<button ng-click="drop()" type="button" ng-hide="trashed" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
+		<button ng-click="drop()" type="button" ng-show="trashed" class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> Удалить</button>
 	</p>
 	<h1>
 		<favorite ng-if=" ! trashed" class-id="currentElement.classId"></favorite>

@@ -72,7 +72,8 @@ edit.controller('EditController', function(
 				data: function() {
 					return {
 						classId: $scope.currentElement.classId,
-						ones: $scope.ones
+						ones: $scope.ones,
+						redirect: true
 					};
 				}
 			}
@@ -89,14 +90,15 @@ edit.controller('EditController', function(
 				data: function() {
 					return {
 						classId: $scope.currentElement.classId,
-						ones: $scope.ones
+						ones: $scope.ones,
+						reload: true
 					};
 				}
 			}
 		});
 	};
 
-	$scope.delete = function() {
+	$scope.drop = function() {
 		$.blockUI();
 
 		$http({

@@ -260,6 +260,7 @@ class EditController extends Controller {
 
 		$item = [
 			'name' => $currentItem->getName(),
+			'nameId' => $currentItem->getNameId(),
 			'title' => $currentItem->getTitle(),
 		];
 

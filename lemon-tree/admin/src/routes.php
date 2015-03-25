@@ -183,4 +183,8 @@ Route::group(array(
 
 	Route::post('restore/{classId}', 'LemonTree\Controllers\EditController@restore');
 
+	Route::get('order/{class}/{classId?}', 'LemonTree\Controllers\OrderController@index');
+
+	Route::post('order/{class}', 'LemonTree\Controllers\OrderController@save');
+
 });
