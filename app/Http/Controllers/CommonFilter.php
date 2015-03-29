@@ -10,7 +10,7 @@ class CommonFilter {
 		view()->share('currentRouteName', \Route::getCurrentRoute()->getActionName());
 		view()->share('loggedUser', null);
 
-		$categoryList = \Cache::tags('Category')->rememberForever(
+		$categoryList = \Cache::tags('App\Category')->rememberForever(
 			'CommonFilter::categoryList', function() {
 				return Category::orderBy('order')->get();
 			}

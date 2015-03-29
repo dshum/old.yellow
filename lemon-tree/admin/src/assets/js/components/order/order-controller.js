@@ -99,8 +99,10 @@ order.controller('OrderController', function(
 			function(response) {
 				if (response.data.state == 'ok') {
 					$rootScope.refreshTree();
-				} else {
+				} else if (response.data.state == 'wrong_parameters') {
 					Alert.message('Некорректные параметры.');
+				} else if (response.data.state == 'error_no_order_property') {
+					Alert.message('Данный класс не имеет поля сортировки.');
 				}
 				$.unblockUI();
 			},
@@ -123,7 +125,11 @@ order.controller('OrderController', function(
 			}
 			$scope.currentItem = response.data.currentItem;
 			$scope.elementList = response.data.elementList;
-			if ($scope.elementList.length) {
+			if (response.data.state == 'error_item_not_found') {
+				$scope.up();
+			} else if (response.data.state == 'error_no_order_property') {
+				$scope.up();
+			} else if ($scope.elementList.length) {
 				var k = 0;
 				for (var i in $scope.elementList) {
 					var element = $scope.elementList[i];

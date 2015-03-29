@@ -22,19 +22,35 @@ class OrderController extends Controller {
 			! $currentItem instanceof Item
 			|| ! $orderList
 		) {
-			$scope['state'] = 'wrong_parameters';
+			$scope['state'] = 'error_wrong_parameters';
 			return json_encode($scope);
 		}
 
 		$orderProperty = $currentItem->getOrderProperty();
 
+		if ( ! $orderProperty) {
+			$scope['state'] = 'error_no_order_property';
+			return json_encode($scope);
+		}
+
 		$saved = array();
 
 		foreach ($orderList as $classId => $order) {
 			$element = Element::getByClassId($classId);
+
 			if ($element) {
 				$element->$orderProperty = $order;
+
 				$element->save();
+
+				\Cache::tags($element->getClass())->flush();
+
+				\Cache::forget("getByClassId({$element->getClassId()})");
+
+				\Cache::forget("getWithTrashedByClassId({$element->getClassId()})");
+
+				\Cache::forget("getOnlyTrashedByClassId({$element->getClassId()})");
+
 				$saved[] = $element->getClassId();
 			}
 		}
@@ -98,6 +114,18 @@ class OrderController extends Controller {
 		}
 
 		$currentItem = $site->getItemByName($class);
+
+		if ( ! $currentItem) {
+			$scope['currentElement'] = $currentElement;
+			$scope['state'] = 'error_item_not_found';
+			return \Response::json($scope);
+		}
+
+		if ( ! $currentItem->getOrderProperty()) {
+			$scope['currentElement'] = $currentElement;
+			$scope['state'] = 'error_no_order_property';
+			return json_encode($scope);
+		}
 
 		$item = [
 			'name' => $currentItem->getName(),

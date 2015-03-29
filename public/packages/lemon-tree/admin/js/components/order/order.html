@@ -12,7 +12,7 @@
 		<button ng-click="moveDown()" type="button" class="btn btn-success"><span class="halflings halflings-arrow-down"></span> Ниже</button>
 		<button ng-click="moveLast()" type="button" class="btn btn-success"><span class="halflings halflings-arrow-right"></span> В конец</button>
 	</p>
-	<p ng-show="elementList.length">
+	<div ng-show="elementList.length">
 		<div class="form-group">
 			<select name="list" multiple data-ng-attr-size="{{elementList.length}}" class="form-control multi-element-list">
 				<option ng-repeat="element in elementList" value="{{element.classId}}">{{element.mainProperty}}</option>
@@ -21,7 +21,7 @@
 		<div class="form-group">
 			<button ng-click="save()" class="btn btn-lg btn-primary" type="submit">Сохранить</button>
 		</div>
-	</p>
+	</div>
 	<p ng-show="empty">
 		В данном разделе элементы отсутствуют.
 	</p>

@@ -542,7 +542,8 @@ class BrowseController extends Controller {
 		$scope['item'] = [
 			'name' => $item->getName(),
 			'nameId' => $item->getNameId(),
-			'title' => $item->getTitle()
+			'title' => $item->getTitle(),
+			'orderProperty' => $item->getOrderProperty()
 		];
 		$scope['currentOrderByList'] = $currentOrderByList;
 		$scope['defaultOrderBy'] = $defaultOrderBy;
