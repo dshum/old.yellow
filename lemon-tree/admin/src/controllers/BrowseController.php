@@ -1,5 +1,6 @@
 <?php namespace LemonTree\Controllers;
 
+use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 use LemonTree\Site;
 use LemonTree\Item;
@@ -438,12 +439,14 @@ class BrowseController extends Controller {
 			if ($page > ceil($total / $perPage)) {
 				$page = ceil($total / $perPage);
 			}
-			\Paginator::setCurrentPage($page);
+			Paginator::currentPageResolver(function() use ($page) {
+				return $page;
+			});
 			$elementList = $elementListCriteria->paginate($perPage);
-			$elementList->setBaseUrl(null);
 			$elementList->appends($parameters);
-			$scope['currentPage'] = $elementList->getCurrentPage();
-			$scope['lastPage'] = $elementList->getLastPage();
+			$scope['currentPage'] = $elementList->currentPage();
+			$scope['perPage'] = $perPage;
+			$scope['count'] = $total;
 		} else {
 			$elementList = $elementListCriteria->get();
 		}

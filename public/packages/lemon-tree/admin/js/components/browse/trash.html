@@ -41,7 +41,7 @@
 				<tr>
 					<td nowrap><span class="h2 hand dashed">{{elementListView.item.title}}</span></td>
 					<td nowrap>
-						<div class="order-link"><img src="/packages/lemon-tree/admin/img/order.gif" alt="" /> <a href><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</a></div>
+						<div class="order-link"><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</div>
 					</td>
 					<td width="90%"></td>
 				</tr>

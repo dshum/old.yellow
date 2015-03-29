@@ -11,7 +11,7 @@ users.controller('LogController', function(
 			method: 'GET',
 			url: 'api/log/form',
 			params: {
-				user: id,
+				user: id
 			}
 		}).then(
 			function(response) {
@@ -52,7 +52,7 @@ users.controller('LogController', function(
 				dateFrom: dateFromString,
 				dateTo: dateToString,
 				page: currentPage,
-				perPage: $scope.perPage,
+				perPage: $scope.perPage
 			}
 		}).then(
 			function(response) {
@@ -95,7 +95,7 @@ users.controller('LogController', function(
 		actionType: null,
 		comments: null,
 		dateFrom:  null,
-		dateTo:  null,
+		dateTo:  null
 	};
 
 	$scope.perPage = 10;

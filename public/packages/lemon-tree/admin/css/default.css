@@ -420,10 +420,15 @@ select.multi-element-list {
 	font-size: 120%;
 }
 
+div.element-list-container {
+	margin: 0;
+	padding: 10px 0 10px 0;
+}
+
 table.element-list {
 	border-collapse: collapse;
 	width: 100%;
-	margin: 5px 0px 20px 0px;
+	margin: 0 0 10px 0;
 	padding: 0;
 }
 
@@ -755,3 +760,8 @@ select.multi-element-list {
 	border-radius: 5px;
 	font-size: 120%;
 }
+
+.pagination {
+	margin: 0;
+}
+

@@ -123,6 +123,7 @@ $site->
 		setTitle('Товар')->
 		setMainProperty('name')->
 		addOrder()->
+		setPerPage(2)->
 		addProperty(
 			TextfieldProperty::create('name')->
 			setTitle('Название')->
@@ -288,6 +289,7 @@ $site->
 		setRoot(true)->
 		setElementPermissions(true)->
 		addOrder()->
+		setPerPage(2)->
 		addProperty(
 			TextfieldProperty::create('name')->
 			setTitle('Название')->

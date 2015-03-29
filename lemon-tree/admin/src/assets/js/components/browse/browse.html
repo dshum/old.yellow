@@ -14,7 +14,7 @@
 		<button type="button" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
 	</p>
 	<p ng-show="bindItemList.length">Добавить: <span ng-repeat="bindItem in bindItemList"><a ui-sref="base.addElement({class: bindItem.nameId})">{{bindItem.title}}</a><span ng-show="{{ ! $last}}">, </span></span></p>
-	<div ng-repeat="elementListView in elementListViewList">
+	<div ng-repeat="elementListView in elementListViewList" class="element-list-container">
 		<table class="element-list-header">
 			<tbody>
 				<tr>
@@ -47,6 +47,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<pagination ng-show="elementListView.numPages > 1" total-items="elementListView.count" ng-model="elementListView.currentPage" items-per-page="elementListView.perPage" max-size="elementListView.maxSize" direction-links="false" num-pages="elementListView.numPages" class="pagination-sm" ng-change="pageChanged()"></pagination>
 	</div>
 	<div ng-if="plugin" ng-include src="plugin" class="plugin"></div>
 	<p ng-show="empty">
