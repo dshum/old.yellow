@@ -1,4 +1,4 @@
-<div ng-controller="BrowseController">
+<div>
 	<ul class="breadcrumb">
 		<li ng-if=" ! currentElement" class="active">Корень сайта</li>
 		<li ng-if="currentElement"><a ui-sref="base.browse">Корень сайта</a></li>
@@ -27,7 +27,7 @@
 						<div class="order-link"><span ng-show="elementListView.lastPage > 1">страница {{elementListView.currentPage}} из {{elementListView.lastPage}}; </span>всего {{elementListView.total}} {{Helper.selectCaseForNumber(elementListView.total, ['элемент', 'элемента', 'элементов'])}}</div>
 					</td>
 					<td width="90%"></td>
-					<td nowrap><a ui-sref="base.search">Поиск элементов</a></td>
+					<td nowrap><a ui-sref="base.searchItem({class: elementListView.item.nameId})">Поиск элементов</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -47,7 +47,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<pagination ng-show="elementListView.numPages > 1" total-items="elementListView.count" ng-model="elementListView.currentPage" items-per-page="elementListView.perPage" max-size="elementListView.maxSize" direction-links="false" num-pages="elementListView.numPages" class="pagination-sm" ng-change="pageChanged()"></pagination>
+		<pagination ng-show="elementListView.perPage" total-items="elementListView.count" ng-model="elementListView.currentPage" items-per-page="elementListView.perPage" max-size="elementListView.maxSize" direction-links="false" num-pages="elementListView.numPages" class="pagination-sm" ng-change="pageChanged(elementListView.item, elementListView.currentPage)"></pagination>
 	</div>
 	<div ng-if="plugin" ng-include src="plugin" class="plugin"></div>
 	<p ng-show="empty">

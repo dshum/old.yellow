@@ -1,4 +1,4 @@
-<div ng-controller="OrderController">
+<div>
 	<ul class="breadcrumb">
 		<li><a ui-sref="base.browse">Корень сайта</a></li>
 		<li ng-if="parentList.length" ng-repeat="parent in parentList"><a ui-sref="base.browseElement({classId: parent.classId})">{{parent.mainProperty}}</a></li>

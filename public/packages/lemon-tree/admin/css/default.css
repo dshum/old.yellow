@@ -187,6 +187,10 @@ span.h2 b {
 	color: #666;
 }
 
+span.h2 .halflings {
+    margin-top: -3px;
+}
+
 p {
 	margin: 5px 0;
 	padding: 5px 0;
@@ -387,6 +391,23 @@ table.element-list-header td {
 	margin: 0;
 	padding: 0 0 3px 0;
 	border-collapse: collapse;
+}
+
+table.element-edit-header {
+    margin: 15px 0 5px 0;
+    padding: 0;
+}
+
+table.element-edit-header tr {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+table.element-edit-header td {
+    margin: 0;
+    padding: 0 0 3px 0;
+    border-collapse: collapse;
 }
 
 .order-link {

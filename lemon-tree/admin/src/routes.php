@@ -149,6 +149,8 @@ Route::group(array(
 
 	Route::get('browse/{classId?}', 'LemonTree\Controllers\BrowseController@index');
 
+	Route::get('list/{class}/{classId?}', 'LemonTree\Controllers\BrowseController@elementList');
+
 	Route::get('search/items', 'LemonTree\Controllers\SearchController@items');
 
 	Route::get('search/item/{class}', 'LemonTree\Controllers\SearchController@item');
@@ -174,6 +176,8 @@ Route::group(array(
 	Route::get('hint/{class}', 'LemonTree\Controllers\HintController@hint');
 
 	Route::get('element/{classId}', 'LemonTree\Controllers\EditController@edit');
+
+	Route::post('element/{classId}', 'LemonTree\Controllers\EditController@save');
 
 	Route::post('copy/{classId}', 'LemonTree\Controllers\EditController@copy');
 

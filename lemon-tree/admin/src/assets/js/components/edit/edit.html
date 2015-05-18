@@ -1,4 +1,4 @@
-<div ng-controller="EditController">
+<div>
 	<ul ng-if=" ! trashed" class="breadcrumb">
 		<li><a ui-sref="base.browse">Корень сайта</a></li>
 		<li ng-repeat="parent in parentList"><a ui-sref="base.browseElement({classId: parent.classId})">{{parent.mainProperty}}</a></li>
@@ -17,12 +17,17 @@
 		<button ng-click="drop()" type="button" ng-hide="trashed" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
 		<button ng-click="drop()" type="button" ng-show="trashed" class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> Удалить</button>
 	</p>
-	<h1>
-		<favorite ng-if=" ! trashed" class-id="currentElement.classId"></favorite>
-		Редактирование элемента типа <b>{{currentItem.title}}</b>
-	</h1>
+    <table class="element-edit-header">
+        <tbody>
+        <tr>
+            <td nowrap><span class="h2 hand"><favorite ng-if=" ! trashed" class-id="currentElement.classId"></favorite> Редактирование элемента типа <b>{{currentItem.title}}</b></span></td>
+            <td width="90%"></td>
+            <td nowrap><a ng-show="currentElement.href" href="{{currentElement.href}}" target="_blank">Смотреть на сайте</a></td>
+        </tr>
+        </tbody>
+    </table>
 	<div class="well" ng-show="currentElement">
-		<form role="form" ng-model="currentElement" submit-on="CtrlS" ng-submit="submit()" ng-show="currentElement">
+		<form role="form" ng-model="currentElement" submit-on="CtrlS" ng-submit="save()" ng-show="currentElement">
 			<div class="form-group{{property.isMainProperty ? ' main-property' : ''}}" ng-repeat="property in propertyList">
 				<property type="property.class" mode="edit" view="property.editView"></property>
 			</div>

@@ -98,6 +98,7 @@ class OneToOneProperty extends BaseProperty {
 		}
 
 		if ($this->value) {
+			$this->value->id = $this->value->id;
 			$this->value->classId = $this->value->getClassId();
 			$this->value->value = $this->value->{$mainProperty};
 		}

@@ -35,21 +35,103 @@ class BrowseController extends Controller {
 
 		$itemList = $site->getItemList();
 
-		$elementListViewList = array();
+		$items = array();
 
 		foreach ($itemList as $itemName => $item) {
 
-			$elementListView = $this->getElementListView(
-				$item, $currentElement, false, false
-			);
-
-			if (sizeof($elementListView)) {
-				$elementListViewList[] = $elementListView;
+			if ( ! $currentElement && ! $item->getRoot()) {
+				continue;
 			}
+
+			if ($currentElement) {
+				$flag = false;
+
+				$propertyList = $item->getPropertyList();
+
+				foreach ($propertyList as $propertyName => $property) {
+					if (
+						$currentElement
+						&& $property->isOneToOne()
+						&& $property->getRelatedClass() == $currentElement->getClass()
+					) $flag = true;
+				}
+
+				if ( ! $flag) {
+					continue;
+				}
+			}
+
+			$items[] = [
+				'name' => $item->getName(),
+				'nameId' => $item->getNameId(),
+				'title' => $item->getTitle(),
+			];
 
 		}
 
-		$scope['elementListViewList'] = $elementListViewList;
+		$scope['itemList'] = $items;
+
+		return \Response::json($scope);
+	}
+
+	public function elementList($class, $classId = null)
+	{
+		$scope = array();
+
+		$loggedUser = LoggedUser::getUser();
+
+		$site = \App::make('site');
+
+		if ($classId) {
+			$currentElement = Element::getByClassId($classId);
+
+			if ( ! $currentElement) {
+				$scope['state'] = 'error_element_not_found';
+				return \Response::json($scope);
+			}
+		} else {
+			$currentElement = null;
+		}
+
+		$currentItem = $site->getItemByName($class);
+
+		if ( ! $currentItem) {
+			$scope['currentElement'] = $currentElement;
+			$scope['state'] = 'error_item_not_found';
+			return \Response::json($scope);
+		}
+
+		$currentClassId = $currentElement
+			? $currentElement->getClassId()
+			: Site::ROOT;
+
+		$item = [
+			'name' => $currentItem->getName(),
+			'nameId' => $currentItem->getNameId(),
+			'title' => $currentItem->getTitle(),
+		];
+
+		$page = \Input::get('page');
+
+		if ($page) {
+			$pages = $loggedUser->getParameter('pages');
+
+			if ($page > 1) {
+				$pages[$currentClassId][$currentItem->getName()] = \Input::get('page');
+			} elseif (isset($pages[$currentClassId][$currentItem->getName()])) {
+				unset($pages[$currentClassId][$currentItem->getName()]);
+			}
+
+			$loggedUser->setParameter('pages', $pages);
+		}
+
+		$elementListView = $this->getElementListView(
+			$currentItem, $currentElement, false, false
+		);
+
+		if ($elementListView) {
+			$scope['elementListView'] = $elementListView;
+		}
 
 		return \Response::json($scope);
 	}
@@ -431,8 +513,6 @@ class BrowseController extends Controller {
 			$defaultOrderBy = true;
 		}
 
-		$site = \App::make('site');
-
 		$perPage = $item->getPerPage();
 
 		if ($perPage) {
@@ -445,6 +525,7 @@ class BrowseController extends Controller {
 			$elementList = $elementListCriteria->paginate($perPage);
 			$elementList->appends($parameters);
 			$scope['currentPage'] = $elementList->currentPage();
+			$scope['lastPage'] = $elementList->lastPage();
 			$scope['perPage'] = $perPage;
 			$scope['count'] = $total;
 		} else {

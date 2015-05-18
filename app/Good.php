@@ -25,22 +25,22 @@ class Good extends Model implements ElementInterface {
 
 	public function category()
 	{
-		return $this->belongsTo('Category', 'category_id');
+		return $this->belongsTo('App\Category', 'category_id');
 	}
 
 	public function subcategory()
 	{
-		return $this->belongsTo('Subcategory', 'subcategory_id');
+		return $this->belongsTo('App\Subcategory', 'subcategory_id');
 	}
 
 	public function color()
 	{
-		return $this->belongsTo('GoodColor', 'good_color_id');
+		return $this->belongsTo('App\GoodColor', 'good_color_id');
 	}
 
 	public function size()
 	{
-		return $this->belongsTo('GooвЫшяу', 'good_size_id');
+		return $this->belongsTo('App\GoodSize', 'good_size_id');
 	}
 
 }

@@ -8,6 +8,8 @@ users.controller('ProfileController', function(
 	});
 
 	$scope.submit = function() {
+		console.log($scope.profile);
+
 		$http({
 			method: 'POST',
 			url: 'api/profile',

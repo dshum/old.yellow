@@ -1,9 +1,10 @@
 <label for="{{view.name}}">{{view.title}}:</label>
+<span name="{{view.name}}" label="{{view.title}}" class="error"></span>
 <div ng-if="view.readonly" class="panel panel-default">
 	<div class="panel-body">
 		{{view.value}}
 	</div>
 </div>
 <div ng-if=" ! view.readonly">
-	<textarea ng-model="view.value" ui-tinymce id="{{view.name}}" class="form-control" rows="10" data-toggle="popover"></textarea>
+	<textarea ng-model="view.value" ui-tinymce id="{{view.name}}" class="form-control" rows="10"></textarea>
 </div>

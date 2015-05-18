@@ -10,4 +10,5 @@
 	<input ng-model="view.value.id" type="hidden" name="{{view.name}}">
 	<input ng-model="view.value.id" type="text" class="form-control one" placeholder="Введите ID или название" ng-options="element.id as element.value for element in getList($viewValue)" data-animation="am-fade" data-min-length="0" data-limit="10" bs-typeahead>
 	<span ng-click="view.value.id = null" class="dashed hand">Очистить</span><br />
+	<span name="{{view.name}}" label="{{view.title}}" class="error"></span>
 </div>

@@ -287,4 +287,19 @@ final class Element {
 		return true;
 	}
 
+	public static function save(ElementInterface $element)
+	{
+		$element->save();
+
+		\Cache::tags($element->getClass())->flush();
+
+		\Cache::forget("getByClassId({$element->getClassId()})");
+
+		\Cache::forget("getWithTrashedByClassId({$element->getClassId()})");
+
+		\Cache::forget("getOnlyTrashedByClassId({$element->getClassId()})");
+
+		return true;
+	}
+
 }

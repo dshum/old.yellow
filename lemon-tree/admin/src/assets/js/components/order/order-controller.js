@@ -104,6 +104,7 @@ order.controller('OrderController', function(
 				} else if (response.data.state == 'error_no_order_property') {
 					Alert.message('Данный класс не имеет поля сортировки.');
 				}
+
 				$.unblockUI();
 			},
 			function(error) {
@@ -123,8 +124,10 @@ order.controller('OrderController', function(
 				$scope.parentElement = response.data.parentElement;
 				$scope.parentList = response.data.parentList;
 			}
+
 			$scope.currentItem = response.data.currentItem;
 			$scope.elementList = response.data.elementList;
+
 			if (response.data.state == 'error_item_not_found') {
 				$scope.up();
 			} else if (response.data.state == 'error_no_order_property') {

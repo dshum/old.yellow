@@ -235,6 +235,149 @@ class EditController extends Controller {
 		return \Response::json($scope);
 	}
 
+	public function save($classId)
+	{
+		$scope = array();
+
+		$currentElement = Element::getWithTrashedByClassId($classId);
+
+		if ( ! $currentElement) {
+			$scope['state'] = 'error_element_not_found';
+			return \Response::json($scope);
+		}
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ( ! $loggedUser->hasUpdateAccess($currentElement)) {
+			$scope['state'] = 'error_element_update_access_denied';
+			return \Response::json($scope);
+		}
+
+		$input = \Input::all();
+
+		$site = \App::make('site');
+
+		$currentItem = $site->getItemByName($currentElement->getClass());
+		$mainProperty = $currentItem->getMainProperty();
+
+		$propertyList = $currentItem->getPropertyList();
+
+		$rules = array();
+		$messages = array();
+		$titles = array();
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				$property->getHidden()
+				|| $property->getReadonly()
+			) continue;
+
+			$titles[$propertyName] = $property->getTitle();
+
+			foreach ($property->getRules() as $rule => $message) {
+				$rules[$propertyName][] = $rule;
+				if (strpos($rule, ':')) {
+					list($name, $value) = explode(':', $rule, 2);
+					$messages[$propertyName.'.'.$name] = $message;
+				} else {
+					$messages[$propertyName.'.'.$rule] = $message;
+				}
+			}
+		}
+
+		$validator = \Validator::make($input, $rules, $messages);
+
+		if ($validator->fails()) {
+			$messages = $validator->messages()->getMessages();
+			$errors = array();
+
+			foreach ($messages as $field => $messageList) {
+				foreach ($messageList as $message) {
+					$errors[$field][] = $message;
+				}
+			}
+
+			$scope['error'] = $errors;
+
+			return json_encode($scope);
+		}
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				$property->getHidden()
+				|| $property->getReadonly()
+				|| $property instanceof OrderProperty
+			) continue;
+
+			$property->setElement($currentElement)->set();
+		}
+
+		Element::save($currentElement);
+
+		$currentElement->classId = $currentElement->getClassId();
+		$currentElement->mainProperty = $currentElement->$mainProperty;
+		$currentElement->trashed = $currentElement->trashed();
+		$currentElement->href = method_exists($currentElement, 'getHref')
+			? $currentElement->getHref() : null;
+
+		$properties = [];
+		$ones = [];
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				$property->getHidden()
+			) continue;
+
+			if (
+				! $currentElement->trashed()
+				&& $propertyName == 'deleted_at'
+			) continue;
+
+			$property->setElement($currentElement);
+
+			$properties[] = [
+				'name' => $property->getName(),
+				'title' => $property->getTitle(),
+				'class' => $property->getClassName(),
+				'readonly' => $property->getReadonly(),
+				'isMainProperty' => $property->isMainProperty(),
+				'element' => $property->getElement(),
+				'item' => [
+					'name' => $currentItem->getName(),
+					'title' => $currentItem->getTitle(),
+				],
+				'editView' => $property->getEditView(),
+			];
+
+			if ($property->isOneToOne()) {
+				$ones[] = [
+					'name' => $property->getName(),
+					'title' => $property->getTitle(),
+					'class' => $property->getClassName(),
+					'readonly' => $property->getReadonly(),
+					'element' => $property->getElement(),
+					'item' => [
+						'name' => $currentItem->getName(),
+						'title' => $currentItem->getTitle(),
+					],
+					'moveView' => $property->getMoveView(),
+				];
+			}
+		}
+
+		UserAction::log(
+			UserActionType::ACTION_TYPE_SAVE_ELEMENT_ID,
+			$currentElement->getClassId()
+		);
+
+		$scope['currentElement'] = $currentElement;
+		$scope['propertyList'] = $properties;
+		$scope['ones'] = $ones;
+		$scope['state'] = 'ok';
+
+		return \Response::json($scope);
+	}
+
 	public function edit($classId)
 	{
 		$scope = array();
@@ -267,6 +410,8 @@ class EditController extends Controller {
 		$currentElement->classId = $currentElement->getClassId();
 		$currentElement->mainProperty = $currentElement->$mainProperty;
 		$currentElement->trashed = $currentElement->trashed();
+		$currentElement->href = method_exists($currentElement, 'getHref')
+			? $currentElement->getHref() : null;
 
 		$parentElement = Element::getParent($currentElement);
 

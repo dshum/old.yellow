@@ -5,7 +5,7 @@ property.directive('property', function ($http, Helper) {
 		scope: {
 			type: "=",
 			mode: "=",
-			view: "=",
+			view: "="
 		},
 		template: '<ng-include src="getTemplateUrl()"></ng-include>',
 		link: function(scope, element, attrs) {
@@ -41,6 +41,21 @@ property.directive('property', function ($http, Helper) {
 					scope.view.open = true;
 				}
 			};
+		}
+	};
+});
+
+property.directive('fileUpload', function () {
+	return {
+		scope: true,
+		link: function (scope, element, attrs) {
+			element.bind('change', function (event) {
+				var files = event.target.files;
+
+				for (var i = 0; i < files.length; i++) {
+					scope.$emit('fileSelected', {name: attrs.id, file: files[i]});
+				}
+			});
 		}
 	};
 });

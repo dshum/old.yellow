@@ -110,12 +110,15 @@ class GroupController extends Controller {
 		if ($validator->fails()) {
 			$messages = $validator->messages()->getMessages();
 			$errors = array();
+
 			foreach ($messages as $field => $messageList) {
 				foreach ($messageList as $message) {
 					$errors[$field][] = $message;
 				}
 			}
+
 			$scope['error'] = $errors;
+
 			return \Response::json($scope);
 		}
 

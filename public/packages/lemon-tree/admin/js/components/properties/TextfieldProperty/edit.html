@@ -1,2 +1,3 @@
 <label for="{{view.name}}">{{view.title}}:</label>
-<input ng-model="view.value" ng-disabled="view.readonly" type="text" id="{{view.name}}" class="form-control" placeholder="Введите {{view.title | lowercase}}" data-toggle="popover">
+<span name="{{view.name}}" label="{{view.title}}" class="error"></span>
+<input ng-model="view.value" ng-disabled="view.readonly" type="text" id="{{view.name}}" class="form-control" placeholder="Введите {{view.title | lowercase}}">

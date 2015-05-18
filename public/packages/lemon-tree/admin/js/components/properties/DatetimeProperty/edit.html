@@ -7,4 +7,5 @@
 	<input ng-model="view.value.date+' '+view.value.time" type="hidden" name="{{view.name}}">
 	<input ng-model="view.value.date" type="text" class="form-control date" date-format="dd.MM.yyyy" model-date-format="yyyy-MM-dd" date-type="string" autoclose="1" start-week="1" placement="top-left" bs-datepicker>
 	<input ng-model="view.value.time" type="text" size="8" class="form-control date" autoclose="1" time-format="HH:mm:ss" model-time-format="HH:mm:ss" time-type="string" length="1" minute-step="1" arrow-behavior="picker" placement="top-left" bs-timepicker>
+	<span name="{{view.name}}" label="{{view.title}}" class="error"></span>
 </div>

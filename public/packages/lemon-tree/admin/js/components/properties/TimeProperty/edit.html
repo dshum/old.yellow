@@ -6,4 +6,5 @@
 	<label for="{{view.name}}">{{view.title}}</label>:
 	<input ng-model="view.value.time" type="hidden" name="{{view.name}}">
 	<input ng-model="view.value.time" type="text" size="8" class="form-control date" autoclose="1" time-format="HH:mm:ss" model-time-format="HH:mm:ss" time-type="string" length="1" minute-step="1" arrow-behavior="picker" placement="top-left" bs-timepicker>
+	<span name="{{view.name}}" label="{{view.title}}" class="error"></span>
 </div>

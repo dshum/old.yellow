@@ -34,7 +34,7 @@ $site->
 		addProperty(
 			ImageProperty::create('image')->
 			setTitle('Изображение')->
-			setResize(205, 139, 80)->
+			setResize(250, 200, 80)->
 			setShow(true)
 		)->
 		addProperty(
@@ -108,7 +108,7 @@ $site->
 			setRelatedClass('App\Category')->
 			setParent(true)->
 			setRequired(true)->
-			bind('Category')
+			bind('App\Category')
 		)->
 		addTimestamps()->
 		addSoftDeletes()
@@ -207,14 +207,14 @@ $site->
 			setRelatedClass('App\Category')->
 			setRequired(true)->
 			setParent(true)->
-			bind('Category')
+			bind('App\Category')
 		)->
 		addProperty(
 			OneToOneProperty::create('subcategory_id')->
 			setTitle('Подкатегория товара')->
 			setRelatedClass('App\Subcategory')->
-			bind('Category')->
-			bind('Category', 'Subcategory')
+			bind('App\Category')->
+			bind('App\Category', 'App\Subcategory')
 		)->
 		addTimestamps()->
 		addSoftDeletes()
@@ -271,8 +271,8 @@ $site->
 			setTitle('Раздел сайта')->
 			setRelatedClass('App\Section')->
 			setParent(true)->
-			bind(Site::ROOT, 'Section')->
-			bind('Section', 'Section')
+			bind(Site::ROOT, 'App\Section')->
+			bind('App\Section', 'App\Section')
 		)->
 		addTimestamps()->
 		addSoftDeletes()

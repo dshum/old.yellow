@@ -1,5 +1,7 @@
 <?php namespace LemonTree\Properties;
 
+use LemonTree\ImageUtils;
+
 class ImageProperty extends BaseProperty {
 
 	protected $folderName = null;
@@ -352,7 +354,6 @@ class ImageProperty extends BaseProperty {
 		$scope = array(
 			'name' => $this->getName(),
 			'title' => $this->getTitle(),
-			'value' => $this->getValue(),
 			'readonly' => $this->getReadonly(),
 			'exists' => $this->exists(),
 			'src' => $this->src(),

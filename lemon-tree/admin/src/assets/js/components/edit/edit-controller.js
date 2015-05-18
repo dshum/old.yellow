@@ -14,6 +14,13 @@ edit.controller('EditController', function(
 	$scope.currentItem = null;
 	$scope.propertyList = [];
 	$scope.ones = [];
+	$scope.files = {};
+
+	$scope.$on('fileSelected', function (event, args) {
+		$scope.$apply(function () {
+			$scope.files[args.name] = args.file;
+		});
+	});
 
 	$http({
 		method: 'GET',
@@ -59,7 +66,46 @@ edit.controller('EditController', function(
 	};
 
 	$scope.save = function() {
+		var data = new FormData();
 
+		for (var i in $scope.propertyList) {
+			var property = $scope.propertyList[i];
+			var name = property.editView.name;
+			var value = property.editView.value;
+			var drop = property.editView.drop;
+
+			if (value && value.id) {
+				data[name] = value.id;
+				data.append(name, value.id);
+			} else if (drop) {
+				data.append(name+'_drop', 1);
+			} else if ($scope.files[name]) {
+				data.append(name, $scope.files[name]);
+			} else if (value && value.value) {
+				data.append(name, value.value);
+			} else if (value) {
+				data.append(name, value);
+			}
+		}
+
+		$http({
+			method: 'POST',
+			url: 'api/element/'+classId,
+			headers: {'Content-Type': undefined},
+			data: data,
+			checkForm: true
+		}).then(
+			function(response) {
+				if (response.data.state == 'ok') {
+					$scope.currentElement = response.data.currentElement;
+					$scope.propertyList = response.data.propertyList;
+					$scope.ones = response.data.ones;
+				}
+			},
+			function(error) {
+				console.log(error);
+			}
+		);
 	};
 
 	$scope.copy = function() {
@@ -138,9 +184,5 @@ edit.controller('EditController', function(
 				$.unblockUI();
 			}
 		);
-	};
-
-	$scope.submit = function() {
-		console.log($scope);
 	};
 });
