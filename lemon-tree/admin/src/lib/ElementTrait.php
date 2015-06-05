@@ -18,6 +18,24 @@ trait ElementTrait {
 		);
 	}
 
+	public function setParent(ElementInterface $parent)
+	{
+		$item = $this->getItem();
+
+		$propertyList = $item->getPropertyList();
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				$property->isOneToOne()
+				&& $property->getRelatedClass() == $parent->getClass()
+			) {
+				$this->$propertyName = $parent->id;
+			}
+		}
+
+		return $this;
+	}
+
 	public function getItem()
 	{
 		if ($this->item) return $this->item;

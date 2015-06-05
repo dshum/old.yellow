@@ -1,0 +1,33 @@
+<div>
+	<ul ng-if=" ! trashed" class="breadcrumb">
+		<li><a ui-sref="base.browse">Корень сайта</a></li>
+		<li ng-repeat="parent in parentList"><a ui-sref="base.browseElement({classId: parent.classId})">{{parent.mainProperty}}</a></li>
+		<li class="active">Новый элемент</li>
+	</ul>
+	<p class="controls">
+		<button ng-click="up()" type="button" class="btn btn-default"><span class="halflings halflings-triangle-top"></span> Наверх</button>
+		<button ng-click="add()" type="button" class="btn btn-default" ng-click="submit()"><span class="halflings halflings-floppy-disk"></span> Добавить</button>
+		<button ng-disabled="true" type="button" class="btn btn-default"><span class="halflings halflings-duplicate"></span> Копировать</button>
+		<button ng-disabled="true" type="button" class="btn btn-default"><span class="halflings halflings-arrow-right"></span> Переместить</button>
+		<button ng-disabled="true" type="button" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
+	</p>
+	<table class="element-edit-header">
+		<tbody>
+		<tr>
+			<td nowrap><span class="h2 hand"><favorite ng-if=" ! trashed" class-id="currentElement.classId"></favorite> Добавление элемента типа <b>{{currentItem.title}}</b></span></td>
+			<td width="90%"></td>
+			<td nowrap><a ng-show="currentElement.href" href="{{currentElement.href}}" target="_blank">Смотреть на сайте</a></td>
+		</tr>
+		</tbody>
+	</table>
+	<div class="well" ng-show="currentElement">
+		<form role="form" ng-model="currentElement" submit-on="CtrlS" ng-submit="save()" ng-show="currentElement">
+			<div class="form-group{{property.isMainProperty ? ' main-property' : ''}}" ng-repeat="property in propertyList">
+				<property type="property.class" mode="edit" view="property.editView"></property>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-lg btn-primary" type="submit">Добавить</button>
+			</div>
+		</form>
+	</div>
+</div>

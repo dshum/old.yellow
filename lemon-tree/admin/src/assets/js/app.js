@@ -118,11 +118,16 @@ app.config([
 				trashed: true
 			}
 		})
-		.state('base.addElement', {
+		.state('base.addRootElement', {
 			url: '/add/{class:[A-Za-z\.0-9]+}',
-			templateUrl: templatePath('components/edit/edit'),
-			controller: 'EditController'
+			templateUrl: templatePath('components/edit/create'),
+			controller: 'CreateController'
 		})
+		.state('base.addElement', {
+				url: '/add/{class:[A-Za-z\.0-9]+}/{parentId:[A-Za-z\.0-9]+}',
+				templateUrl: templatePath('components/edit/create'),
+				controller: 'CreateController'
+			})
 		.state('filemanager', {
 			url: '/filemanager',
 			templateUrl: templatePath('components/filemanager/filemanager'),

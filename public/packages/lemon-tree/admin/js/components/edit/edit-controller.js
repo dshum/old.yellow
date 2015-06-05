@@ -16,12 +16,6 @@ edit.controller('EditController', function(
 	$scope.ones = [];
 	$scope.files = {};
 
-	$scope.$on('fileSelected', function (event, args) {
-		$scope.$apply(function () {
-			$scope.files[args.name] = args.file;
-		});
-	});
-
 	$http({
 		method: 'GET',
 		url: 'api/element/'+classId
@@ -54,6 +48,12 @@ edit.controller('EditController', function(
 			console.log(error);
 		}
 	);
+
+	$scope.$on('fileSelected', function (event, args) {
+		$scope.$apply(function () {
+			$scope.files[args.name] = args.file;
+		});
+	});
 
 	$scope.up = function() {
 		if ($scope.trashed && $scope.currentItem) {

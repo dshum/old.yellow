@@ -61,7 +61,8 @@
 <script src="<?=asset('packages/lemon-tree/admin/js/components/order/order-controller.js')?>"></script>
 
 <script src="<?=asset('packages/lemon-tree/admin/js/components/edit/edit.js')?>"></script>
-<script src="<?=asset('packages/lemon-tree/admin/js/components/edit/edit-controller.js')?>"></script>
+<script src="<?=asset('packages/lemon-tree/admin/js/components/edit/create-controller.js')?>"></script>
+	<script src="<?=asset('packages/lemon-tree/admin/js/components/edit/edit-controller.js')?>"></script>
 
 <script src="<?=asset('packages/lemon-tree/admin/js/components/filemanager/filemanager.js')?>"></script>
 <script src="<?=asset('packages/lemon-tree/admin/js/components/filemanager/filemanager-controller.js')?>"></script>

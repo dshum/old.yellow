@@ -175,6 +175,10 @@ Route::group(array(
 
 	Route::get('hint/{class}', 'LemonTree\Controllers\HintController@hint');
 
+	Route::get('create/{class}/{classId?}', 'LemonTree\Controllers\EditController@create');
+
+	Route::post('create/{class}/{classId?}', 'LemonTree\Controllers\EditController@add');
+
 	Route::get('element/{classId}', 'LemonTree\Controllers\EditController@edit');
 
 	Route::post('element/{classId}', 'LemonTree\Controllers\EditController@save');

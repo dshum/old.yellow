@@ -13,7 +13,14 @@
 		<button type="button" class="btn btn-default"><span class="halflings halflings-arrow-right"></span> Переместить</button>
 		<button type="button" class="btn btn-warning"><span class="halflings halflings-trash"></span> Удалить</button>
 	</p>
-	<p ng-show="bindItemList.length">Добавить: <span ng-repeat="bindItem in bindItemList"><a ui-sref="base.addElement({class: bindItem.nameId})">{{bindItem.title}}</a><span ng-show="{{ ! $last}}">, </span></span></p>
+	<p ng-show="bindItemList.length">Добавить:
+		<span ng-if="currentElement" ng-repeat="bindItem in bindItemList">
+			<a ui-sref="base.addElement({parentId: currentElement.classId, class: bindItem.nameId})">{{bindItem.title}}</a><span ng-show="{{ ! $last}}">, </span>
+		</span>
+		<span ng-if=" ! currentElement" ng-repeat="bindItem in bindItemList">
+			<a ui-sref="base.addRootElement({class: bindItem.nameId})">{{bindItem.title}}</a><span ng-show="{{ ! $last}}">, </span>
+		</span>
+	</p>
 	<div ng-repeat="elementListView in elementListViewList" class="element-list-container">
 		<table class="element-list-header">
 			<tbody>

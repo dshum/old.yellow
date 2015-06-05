@@ -1,5 +1,6 @@
 <?php namespace LemonTree\Controllers;
 
+use LemonTree\ElementInterface;
 use LemonTree\Site;
 use LemonTree\Item;
 use LemonTree\Element;
@@ -374,6 +375,122 @@ class EditController extends Controller {
 		$scope['propertyList'] = $properties;
 		$scope['ones'] = $ones;
 		$scope['state'] = 'ok';
+
+		return \Response::json($scope);
+	}
+
+	public function create($class, $classId = null)
+	{
+		$scope = array();
+
+		$loggedUser = LoggedUser::getUser();
+
+		if ($classId) {
+			$parentElement = Element::getByClassId($classId);
+
+			if ( ! $parentElement) {
+				$scope['state'] = 'error_element_not_found';
+				return \Response::json($scope);
+			}
+
+			if ( ! $loggedUser->hasViewAccess($parentElement)) {
+				$scope['state'] = 'error_element_access_denied';
+				return \Response::json($scope);
+			}
+		} else {
+			$parentElement = null;
+		}
+
+		$site = \App::make('site');
+
+		$currentItem = $site->getItemByName($class);
+
+		if ( ! $currentItem) {
+			$scope['state'] = 'error_item_not_found';
+			return \Response::json($scope);
+		}
+
+		$mainProperty = $currentItem->getMainProperty();
+
+		$item = [
+			'name' => $currentItem->getName(),
+			'nameId' => $currentItem->getNameId(),
+			'title' => $currentItem->getTitle(),
+		];
+
+		$currentElement = new $currentItem->getClass();
+
+		$currentElement->classId = null;
+		$currentElement->mainProperty = null;
+		$currentElement->trashed = false;
+		$currentElement->href = null;
+
+		if ($parentElement instanceof ElementInterface) {
+			$currentElement->setParent($parentElement);
+
+			$parentList = Element::getParentList($currentElement);
+
+			$parentElement->classId = $parentElement->getClassId();
+			$parentElement->mainProperty = $parentElement->$mainProperty;
+
+			foreach ($parentList as $parent) {
+				$parent->classId = $parent->getClassId();
+				$parent->mainProperty = $parent->$mainProperty;
+			}
+		}
+
+		$propertyList = $currentItem->getPropertyList();
+
+		$properties = [];
+		$ones = [];
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				$property->getHidden()
+			) continue;
+
+			if (
+				$propertyName == 'deleted_at'
+			) continue;
+
+			$property->setElement($currentElement);
+
+			$properties[] = [
+				'name' => $property->getName(),
+				'title' => $property->getTitle(),
+				'class' => $property->getClassName(),
+				'readonly' => $property->getReadonly(),
+				'isMainProperty' => $property->isMainProperty(),
+				'element' => $property->getElement(),
+				'item' => [
+					'name' => $currentItem->getName(),
+					'title' => $currentItem->getTitle(),
+				],
+				'editView' => $property->getEditView(),
+			];
+
+			if ($property->isOneToOne()) {
+				$ones[] = [
+					'name' => $property->getName(),
+					'title' => $property->getTitle(),
+					'class' => $property->getClassName(),
+					'readonly' => $property->getReadonly(),
+					'element' => $property->getElement(),
+					'item' => [
+						'name' => $currentItem->getName(),
+						'title' => $currentItem->getTitle(),
+					],
+					'moveView' => $property->getMoveView(),
+				];
+			}
+		}
+
+		$scope['currentElement'] = $currentElement;
+		$scope['parentElement'] = $parentElement;
+		$scope['parentList'] = $parentList;
+		$scope['currentItem'] = $item;
+		$scope['propertyList'] = $properties;
+		$scope['ones'] = $ones;
 
 		return \Response::json($scope);
 	}
